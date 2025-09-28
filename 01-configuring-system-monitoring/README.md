@@ -90,7 +90,7 @@ wecutil qc.
 ![](./images/20.png)
 ![](./images/21.png)
 ![](./images/22.png)
-![](./images/23.jpg)
+![not working](./images/23.jpg)
 ![](./images/25.jpg)
 ![](./images/26.png)
 ![](./images/28.png)
@@ -108,7 +108,7 @@ wecutil qc.
 ![](./images/40.png)
 ![](./images/41.jpg)
 ![](./images/42.png)
-![](./images/43.jpg)
+![not working](./images/43.jpg)
 ![](./images/45.png)
 ![](./images/46.jpg)
 
