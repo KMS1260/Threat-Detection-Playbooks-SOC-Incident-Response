@@ -13,31 +13,50 @@
 - Group Policy / Local Security Policy
 - PowerShell: `wecutil`, `winrm`, `Get-WinEvent`
 
----
-
-## Step 1 — Prepare & Validate
-On the collector, initialise WEC with `wecutil qc`, enable WinRM, and open the *Remote Event Log Management* firewall group. On the source, add the collector's computer account to **Event Log Readers**.
-
----
-
-## Step 2 — Execute & Observe
-Create or import a subscription on the collector. Generate a known event on the source (e.g., a test logon) and wait for collection to occur.
-
----
-
-## Step 3 — Verify & Capture Evidence
-Query the collector for recent events from the source using Event Viewer or `Get-WinEvent` and take a screenshot of matching Event IDs.
-
----
-
-## Sample Outputs
-```
-wecutil qc
-winrm quickconfig
-Get-WinEvent -LogName Security -MaxEvents 5
-```
-
-## Key Takeaways
-- Validate prerequisites before troubleshooting subscriptions
-- Firewall display groups are the fastest way to open the right rules
-- Use a known Event ID to test end‑to‑end flow
+![](./images/0.png)
+![](./images/1.png)
+![](./images/2.png)
+![](./images/3.jpg)
+![](./images/4.jpg)
+![](./images/5.png)
+![](./images/6.jpg)
+![](./images/7.png)
+![](./images/8.jpg)
+![](./images/9.png)
+![](./images/10.jpg)
+![](./images/11.jpg)
+![](./images/12.jpg)
+![](./images/13.png)
+![](./images/14.png)
+![](./images/15.jpg)
+![](./images/16.png)
+![](./images/17.jpg)
+![](./images/18.png)
+![](./images/19.png)
+![](./images/20.png)
+![](./images/21.png)
+![](./images/22.png)
+![](./images/23.jpg)
+![](./images/24.png)
+![](./images/25.jpg)
+![](./images/26.png)
+![](./images/27.jpg)
+![](./images/28.png)
+![](./images/29.png)
+![](./images/30.png)
+![](./images/31.png)
+![](./images/32.png)
+![](./images/33.jpg)
+![](./images/34.jpg)
+![](./images/35.png)
+![](./images/36.png)
+![](./images/37.jpg)
+![](./images/38.jpg)
+![](./images/39.png)
+![](./images/40.png)
+![](./images/41.jpg)
+![](./images/42.png)
+![](./images/43.jpg)
+![](./images/44.png)
+![](./images/45.png)
+![](./images/46.jpg)
