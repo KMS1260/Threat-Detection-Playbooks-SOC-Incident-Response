@@ -505,7 +505,7 @@ You have reviewed the detection of the IoCs of clearing logs of a monitored syst
 - Focus on agent/endpoint pivots for clarity
 - Always export artefacts for the case record
 
-## 📘 Quick Quiz — Wazuh, ATT&CK & IR Fundamentals
+## Quick Quiz — Wazuh, ATT&CK & IR Fundamentals
 
 <details>
   <summary><strong>1) What sources can be used by Wazuh to detect suspicious activity? (Select all that apply)</strong></summary>
