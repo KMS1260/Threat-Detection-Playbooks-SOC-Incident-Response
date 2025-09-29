@@ -125,6 +125,7 @@
 
 ## Concluding the investigation on MS10
 
+![](./images/25.jpg)
 ![](./images/77.png)
 ![](./images/78.png)
 ![](./images/79.jpg)
