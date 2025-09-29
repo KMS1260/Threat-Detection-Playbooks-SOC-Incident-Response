@@ -26,12 +26,12 @@ we will be working from a virtual machine named KALI hosting Kali Linux. This sy
 
 ---
 
-## Detecting logon events with wazuh
+## 1) Detecting logon events with wazuh
 Scope dashboards to the target agent/host. Establish timing for the test window.
 
 ---
 
-## Detecting anti-forensics with wazuh
+## 2) Detecting anti-forensics with wazuh
 Run a controlled password‑guessing attempt; verify failed logons and look for a subsequent success.
 
 ---
