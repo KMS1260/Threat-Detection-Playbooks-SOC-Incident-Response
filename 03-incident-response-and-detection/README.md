@@ -29,6 +29,43 @@ we will be working from a virtual machine named KALI hosting Kali Linux. This sy
 ## 1) Detecting logon events with wazuh
 Scope dashboards to the target agent/host. Establish timing for the test window.
 
+![](./images/0.png)
+![](./images/1.jpg)
+![](./images/2.jpg)
+![](./images/3.jpg)
+![](./images/4.jpg)
+![](./images/5.png)
+![](./images/6.jpg)
+![](./images/7.jpg)
+![](./images/8.jpg)
+![](./images/9.jpg)
+![](./images/10.png)
+![](./images/11.png)
+![](./images/12.jpg)
+![](./images/13.jpg)
+![](./images/14.png)
+![](./images/15.jpg)
+![](./images/16.png)
+![](./images/17.jpg)
+![](./images/18.png)
+![](./images/19.png)
+![](./images/20.jpg)
+![](./images/21.jpg)
+![](./images/22.jpg)
+![](./images/23.jpg)
+![](./images/24.png)
+![](./images/25.png)
+![](./images/26.jpg)
+![](./images/27.png)
+![](./images/28.png)
+![](./images/29.jpg)
+![](./images/30.jpg)
+![](./images/31.png)
+![](./images/32.jpg)
+![](./images/33.png)
+![](./images/34.jpg)
+![](./images/35.png)
+
 ---
 
 ## 2) Detecting anti-forensics with wazuh
@@ -36,6 +73,13 @@ Run a controlled password‑guessing attempt; verify failed logons and look for 
 
 ---
 
+![](./images/36.jpg)
+![](./images/37.png)
+![](./images/38.jpg)
+![](./images/39.jpg)
+![](./images/40.png)
+![](./images/41.png)
+![](./images/42.png)
 
 
 ## Key Takeaways
