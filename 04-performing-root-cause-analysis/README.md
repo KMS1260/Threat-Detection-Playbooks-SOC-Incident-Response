@@ -25,28 +25,6 @@
 
 ## Investigating a security alert
 
----
-
-## Investigate the breach on DC10
-
----
-
-## Expanding the investigation to MS10
-
----
-
-## Continuing the investigation from PC10
-
----
-
-## Continuing the investigation on ROUTER-BORDER
-
----
-
-## Concluding the investigation on MS10
-
----
-
 ![](./images/0.jpg)
 ![](./images/1.png)
 ![](./images/2.png)
@@ -72,6 +50,11 @@
 ![](./images/22.png)
 ![](./images/23.jpg)
 ![](./images/24.jpg)
+
+---
+
+## Investigate the breach on DC10
+
 ![](./images/25.jpg)
 ![](./images/27.png)
 ![](./images/28.jpg)
@@ -85,12 +68,22 @@
 ![](./images/37.jpg)
 ![](./images/39.png)
 ![](./images/40.png)
+
+---
+
+## Expanding the investigation to MS10
+
 ![](./images/41.jpg)
 ![](./images/42.jpg)
 ![](./images/43.jpg)
 ![](./images/44.jpg)
 ![](./images/45.png)
 ![](./images/46.jpg)
+
+---
+
+## Continuing the investigation from PC10
+
 ![](./images/47.jpg)
 ![](./images/48.jpg)
 ![](./images/49.png)
@@ -104,6 +97,12 @@
 ![](./images/57.jpg)
 ![](./images/58.png)
 ![](./images/59.jpg)
+
+
+---
+
+## Continuing the investigation on ROUTER-BORDER
+
 ![](./images/60.png)
 ![](./images/61.jpg)
 ![](./images/62.jpg)
@@ -121,6 +120,11 @@
 ![](./images/74.jpg)
 ![](./images/75.jpg)
 ![](./images/76.jpg)
+
+---
+
+## Concluding the investigation on MS10
+
 ![](./images/77.png)
 ![](./images/78.png)
 ![](./images/79.jpg)
@@ -137,6 +141,8 @@
 ![](./images/91.jpg)
 ![](./images/92.jpg)
 ![](./images/93.png)
+
+---
 
 
 ## Key Takeaways
