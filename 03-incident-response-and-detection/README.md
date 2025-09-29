@@ -1,38 +1,42 @@
 # Incident Response & Detection
 
-> **Scenario summary:** We will detect authentication abuse with a SIEM and confirm alert fidelity. The guide is written for GitHub with step‑by‑step actions, exact commands, and screenshots stored in `./images/` (e.g., `./images/00.png`).
+In this case, we will learn about using an automated security platform, wazuh, to detect IoCs related to suspicious activity. This demonstrates the detection phase of an Incident Response Plan. 
+
+As a security professional, we want to take full advantage of automation to detect and potentially respond to security violations. In this case, we will use wazuh to review security alerts (i.e., detections) related to questionable logon activity. Finally, we will delete audit logs files and then use wazuh to evaluate the detection of this abusive activity. 
+
+the security workstation this work is going to be done in Kali Linux, is in server subnet. we will access the wazuh web interface from Kali and DC10 while performing attack simulations from Kali and DC10 against DC10. 
+
+## Understand the environment
+
+we will be working from a virtual machine named KALI hosting Kali Linux. This system is security workstation and is in server subnet. we will use a virtual machine named WAZUH running Ubuntu Server and supporting the wazuh security platform. we will be accessing the wazuh web interface from Kali. we will also be using a virtual machine named DC10 hosting Windows Server 2019, where we will perform attack simulations on and against.
 
 ## Objectives
 - Generate realistic auth activity for baseline
 - Detect failures followed by a success from the same source
 - Pivot by agent and rule ID to confirm scope
+- apply security principles to secure enterprise infrastructure.
+- Explaining security alerting and monitoring concepts and tools.
+- modify enterprise capabilities to enhance security.
+- use data sources to support an investigation. 
 
-## Tools & Techniques
-- SIEM (e.g., Wazuh/Splunk/Sentinel)
-- Test generator (e.g., `hydra` against RDP)
-- KQL/SPL queries
+## Table of Contents
+- [1) Detecting logon events with wazuh](#1-Detecting-logon-events-with-wazuh)
+- [2) Detecting anti-forensics with wazuh](#2-Detecting-anti-forensics-with-wazuh)
+
 
 ---
 
-## Step 1 — Prepare & Validate
+## Detecting logon events with wazuh
 Scope dashboards to the target agent/host. Establish timing for the test window.
 
 ---
 
-## Step 2 — Execute & Observe
+## Detecting anti-forensics with wazuh
 Run a controlled password‑guessing attempt; verify failed logons and look for a subsequent success.
 
 ---
 
-## Step 3 — Verify & Capture Evidence
-Review rule IDs, enrich with source IP and account details, and export the alert for evidence.
 
----
-
-## Sample Outputs
-```
-hydra -t 1 -V -f -l administrator -P passlist.txt rdp://10.1.16.1
-```
 
 ## Key Takeaways
 - Correlate failures and success to minimise false positives
