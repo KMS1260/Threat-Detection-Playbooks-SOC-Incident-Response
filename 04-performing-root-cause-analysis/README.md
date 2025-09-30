@@ -367,31 +367,223 @@ Leave the Event Viewer open.
 
 ## Expanding the investigation to MS10
 
+Since the RDP connection to DC10 originated from MS10, we will continue the root cause analysis and investigation from the MS10 system in this case. 
+
+Connect to the MS10 virtual machine. select **other user and then** sign in as administrator
+
 ![](./images/41.jpg)
+
+The default user to log into MS10 will be presented as Jaime. In this situation, this is not evidence of the violating event(s). The Jaime account is the default account for the MS10 system in the environment. 
+
+Minimize or close **Server Manager** if it appears. It will not be used. 
+
+Select **Type here to search** from the taskbar, enter Event and then select **Event Viewer**. 
+
+Maximize the Event Viewer. 
+
+In the left pane, double-click **Windows logs** to expand it. 
+
+In the expanded list, select **Security**.
+
 ![](./images/42.jpg)
+
+Select the topmost event record, then select **Find…** from the right pane. 
+
+Type 5:55 into the Find what: field, then select **Find Next**.
+
 ![](./images/43.jpg)
+
+Please ignore any events occurring after 5:55 PM on MS10. They are not relevant. 
+
+Once the first event with a time stamp starting with 5:55 is found, change the search term to jaime in the Find what: field, then select **Find Next**. 
+
 ![](./images/44.jpg)
+
+Select **Cancel** to close the Find window. 
+
+The selected event record should be a Logon event with Event ID of 4648. Look over the information on the General page for this event record. 
+
 ![](./images/45.png)
+
+Note the username from the Account Name: dylan 
+
+RDP initiator = dylan 
+
+We notice that the time stamp for this event record is nearly the same as that of the RDP connection event record on DC10, which was 17:55:26. This confirms that MS10 was the origin of the RDP session to DC10 and that the jaime account was used to log into DC10 over RDP. 
+
+We now have evidence that the user that initiated the RDP session from MS10 to DC10 was not Jaime the administrator, but dylan from HR, who is a standard worker with a limited account. This means that the credentials for the jaime account were somehow obtained by dylan, and then used to connect to DC10 via RDP and disable auditing. 
+
+Now we want to confirm that the dylan account was logged onto MS10. So, we look through the event log for an entry with an Event ID of 4624 (a logon event) and an Account name: of dylan. we discover one such event record with an Event Record ID of **4176**. 
+
+While the event record for the RDP initiation is still selected, select Find… from the right pane, change the search term to 4176 in the **Find** what: field, then select **Find Next**. 
+
+Select **Cancel** to close the Find window. 
+
 ![](./images/46.jpg)
+
+The selected event record should indicate that An account was successfully logged on and that account was dylan. Review the other information presented on the General tab. 
+
+Quick Quiz
+
+<details>
+  <summary><strong>What is the logon type for the currently selected event record related to <em>Dylan</em> and <strong>MS10</strong>?</strong></summary>
+
+<details><summary>10</summary>❌ Incorrect — 10 = RemoteInteractive (RDP/Terminal Services). </details>
+
+<details><summary>2</summary>✅ Correct — 2 = Interactive (console login). </details>
+
+<details><summary>3</summary>❌ Incorrect — 3 = Network (non-interactive). </details>
+
+<details><summary>7</summary>❌ Incorrect — 7 = Unlock (workstation unlock). </details>
+</details>
+
+<sub>Refs: Microsoft event 4624/logon-types mapping — Type **2** is Interactive; Type **3** Network; Type **10** RemoteInteractive (RDP). </sub>
+
+We now have evidence that Dylan logged into MS10 directly. we consult the data center entry logs and see that Dylan was able to enter the data center at 5:32 PM. we check the video footage of the data center entrance at the time and see proof of Dylan entering the data center. (in a siuation like this we would need to look at evidence other than computer logs). 
+
+We take a note of the time stamp for this logon event record of the dylan account accessing MS10. 
+
+Time of Dylan logging into MS10: 5:48 PM 
+
+Leave the Event Viewer window open. 
+
+We now have evidence that Dylan was the perpetrator of the audit policy changes and that they were responsible for the RDP connection from MS10 to DC10. We have proof of their entry into the data center to access the MS10 system directly. However, we don't understand how Dylan was able to obtain login credentials for the jaime account. 
+
+We should continue the investigation from Jaime's workstation, which is PC10.
 
 ---
 
 ## Continuing the investigation from PC10
 
+We are now looking for anything that might reveal how the credentials for the jaime account were obtained by Dylan. We should look at Jaime's PC10 workstation. 
+
+Connect to the PC10 virtual machine. sign in as Jaime.
+
 ![](./images/47.jpg)
+
+As the security professional, you may be authorized to access systems throughout the network in pursuit of evidence related to security breaches. In this scenario, we are taking a shortcut to access to PC10 under the jaime account by log into the system with the jaime credentials. 
+
+After reviewing the event log for security events and checking the malware scanner for records of malicious code discoveries, we don't find anything relevant. we decide to check Jaime's email inbox. 
+
+We will check **Mozilla Thunderbird** from the Desktop.
+
 ![](./images/48.jpg)
+
+While at first we are impressed by Jaime's adherence to Inbox Zero, we are curious about the single message remaining in their inbox. Select **Grab you free juice!**.
+
 ![](./images/49.png)
+
+Immediately we suspect that this is a phishing scam email since the subject line is not using correct grammar. As we read over the message, we are now convinced that this is a scam email. Even though the source email address is one we know to be legitimate, it could easily be spoofed to give the scam message a sense of validity. 
+
+We will position the cursor over the **System Update** link but we will not click on it.
+
 ![](./images/50.png)
+
+Notice the URL that appears in the bottom status bar. It contains an IP address and a file named proxyset.bat. Note the IP address. 
+
+Scam IP address: **10.1.24.142**
+ 
+Leave the Thunderbird window open. 
+
+Select **Type here to search** from the taskbar, enter **cmd**, then select **Command Prompt** from the results. 
+ 
+Enter
+```cmd
+10.1.24.142 
+```
 ![](./images/51.jpg)
+
+Wait for the ping operation to complete and for the C\Users\jaime> prompt to be displayed. Notice that the results of this command show that the IP address used in the scam email is no longer present on the network. Technically, a ping check for a system is not a completely reliable means of knowing that a system is not present or does not exist. A firewall on the target can discard any ping echo requests, thus, the results look the same as when the target is not present. A more effective technique is to perform a full port scan over TCP and a full enumeration scan over UDP.  
+
+We want to determine if the file that the URL from the scam email is present on the PC10 system.  
+
+Enter: 
+```cmd
+cd c:\ && dir /s proxyset.bat
+```
 ![](./images/52.jpg)
+
+After a few seconds, we should see the result indicating that the proxyset.bat file is present on the system. 
+
+We should not the absolute folder reference for where the proxyset.bat file is located: c:\Users\jaime\Downloads 
+
+We have confirmed that Jaime received a spam email message, which included a link to download a file. Jaime must have fallen for the scam message and downloaded the file. 
+
+Everyone is vulnerable to social engineering attacks. Even administrators can be fooled by a cleverly crafted pretext message. Don't blame the victim for falling for the scam. Blame the crafters of the attack for being malicious and using social engineering tricks to fool their targets. Social engineering remains one of the primaries means by which adversaries gain access to a secure organization's network. Attackers will use any and every opportunity to exploit an existing weakness, or they will use techniques to create a vulnerability. Social engineering is often used to trick a member of an organization into giving away information or granting logical or physical access to a secured infrastructure. We all need to be more aware of the potential to be targeted by social engineering attacks and be more skeptical of any and all communications. 
+ 
+
+View the contents of the downloaded file by entering: 
+```cmd
+type c:\Users\jaime\Downloads\proxyset.bat
+```
 ![](./images/53.jpg)
+
+Based on the contents of this file, we see that it changes the proxy settings for Firefox. You want to see if Jaime executed this file. 
+
+Select **Type here to search** from the taskbar, enter firefox, then select **Firefox** from the results. 
+
+From the Firefox browser window, select the **Open application menu** from the toolbar (a.k.a. the hamburger menu), then select **Settings**. 
+
 ![](./images/54.png)
+
+Scroll down to the bottom of the Settings General page. Under Network Settings select **Settings…**. 
+
 ![](./images/55.png)
+
 ![](./images/56.png)
+
+Based on what you see on the Connection Settings you have verified that Jaime did fall for the scam email message, downloaded the batch script, and executed that downloaded script.
+
+Quick Quiz
+
+<details>
+  <summary><strong>What is the setting selected in the Connection Settings area of Firefox?</strong></summary>
+
+<details><summary>No proxy</summary>❌ Incorrect</details>
+
+<details><summary>Use system proxy settings</summary>❌ Incorrect</details>
+
+<details><summary>Automatic proxy configuration URL</summary>❌ Incorrect</details>
+
+<details><summary>Auto-detect proxy settings for this network</summary>❌ Incorrect</details>
+
+<details><summary>Manual proxy configuration</summary>✅ Correct</details>
+</details>
+
+<sub>Firefox’s Connection Settings include: No proxy, Auto-detect, Use system proxy settings, Manual proxy configuration, and Automatic proxy configuration URL. (See Mozilla’s docs.)</sub> :contentReference[oaicite:0]{index=0}
+::contentReference[oaicite:1]{index=1}
+
+Select **Cancel** to close the Connection Settings window of Firefox. 
+
+Leave Firefox open. 
+
+Switch back to Thunderbird by selecting its icon from the taskbar. Its icon is a blue phoenix around an envelope. 
+
+Look over the scam email again. There is an encouragement to first run the System Update file, but the second inducement is to visit a URL for the Juice Shop located in the building. 
+
+We recognize the URL of juiceshop.com as being valid. This seems odd as part of a scam message. You wonder why there would be a link to a valid site in a scam message.
+
 ![](./images/57.jpg)
+
+Switch back to Firefox by selecting its icon from the taskbar. Its icon is the orange fox curled around a globe. 
+
+In the Firefox address bar, enter: 
+```text
+juiceshop.com 
+```
 ![](./images/58.png)
+
+After 30 seconds or so, you will see an error of The connection has timed out. we then remember that Firefox is configured to use a proxy, which was set by the script from the scam email. Since the attempt to access this known valid URL failed, the proxy settings in use by Firefox are not currently working as expected. 
+
+Switch back to the Command Prompt by selecting it from the taskbar.
+
 ![](./images/59.jpg)
 
+Review the script, which should still be displayed in the Command Prompt. We notice that the proxy settings made by the script will direct all communications from Firefox to 10.1.16.2. We should recognize that IP address. That is the IP address of MS10. Thus, if Jaime did click on the Juice Shop link and reached the actual website, then there would have been a proxy function operating on MS10 at the time Jaime fell for the scam message. But, if such a proxy function was used to support Jaime's visit to the Juice Shop URL, it is not operating now. 
+
+Leave all windows open. 
+
+Based on the additional evidence gathered from PC10, we know that Jaime was the victim of a scam email. That scam email convinced Jaime to download and run a script. That script then changed the Firefox browser proxy settings to use 10.1.16.2 (MS10) as a proxy. We want to determine if Jaime clicked on the link to visit the Juice Shop URL. So, the next steps will take place on ROUTER-BORDER. 
 
 ---
 
