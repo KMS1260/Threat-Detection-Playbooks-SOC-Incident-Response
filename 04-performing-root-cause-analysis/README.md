@@ -26,7 +26,7 @@ We will be working from a virtual machine named KALI hosting Kali Linux. We will
 ## Table of Contents
 
 1. [Investigating a security alert](#investigating-a-security-alert)
-2. [Investigate the breach on DC10](#investigate-the-breach-on-dc10)
+2. [Investigating the breach on DC10](#investigating-the-breach-on-dc10)
 3. [Expanding the investigation to MS10](#expanding-the-investigation-to-ms10)
 4. [Continuing the investigation from PC10](#continuing-the-investigation-from-pc10)
 5. [Continuing the investigation on ROUTER-BORDER](#continuing-the-investigation-on-router-border)
@@ -235,7 +235,7 @@ After your review of the security alerts related to the audit policy changes, yo
 
 ---
 
-## Investigate the breach on DC10
+## Investigating the breach on DC10
 
 we will now switch over to the DC10 system to continue the root cause investigation. In this part, we will determine what audit policies were changed and inspect the Security log of DC10 for more information. 
 
