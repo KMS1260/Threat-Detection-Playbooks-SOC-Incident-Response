@@ -745,28 +745,222 @@ It seems like we have almost figured out the exploitation timeline and the TTPs 
 
 ## Concluding the investigation on MS10
 
+Based on the evidence we collected, Jaime visited the Juice Shop website through MS10, which was serving as a proxy. That web connection was in plain text. 
+
+Connect to the MS10 virtual machine. Sign in as administrator. 
+
 ![](./images/25.jpg)
+
+We want to determine if the proxyset.bat file was created and remains on MS10. 
+
+Select **Type here to search** from the taskbar, enter cmd, right-click **Command Prompt** from the results, then select **Run as administrator**. 
+
 ![](./images/77.png)
+
+Select **Yes** on the User Account Control window. 
+
 ![](./images/78.png)
+
+Enter: 
+```cmd
+cd c:\ && dir /s proxy*
+```
 ![](./images/79.jpg)
+
+There should be several results that match the "proxy*" string. However, none of them are proxyset.bat. 
+
+We should notice that one of the match results, proxy.ps1, is in the c:\HR folder.
+
 ![](./images/80.png)
+
+Enter type c:\HR\proxy.ps1 to view the contents of this file.
+```cmd
+type c:\HR\proxy.ps1
+```
 ![](./images/81.jpg)
+
+Quick Quiz
+
+<details>
+  <summary><strong>The .ps1 file extension on this script indicates what?</strong></summary>
+
+<details><summary>This is a Bash shell script.</summary>❌ Incorrect</details>
+
+<details><summary>This is a python script.</summary>❌ Incorrect</details>
+
+<details><summary>This is a batch script.</summary>❌ Incorrect</details>
+
+<details><summary>This is a PowerShell script.</summary>✅ Correct</details>
+</details>
+
+This is interesting because Dylan is a member of the HR department, and this script would allow the MS10 system to serve as a proxy. 
+
+Upon further reflection of the gathered evidence, we should recall that the scam email encouraged Jaime to log into the Juice Shop website using his credentials. He may have used his company credentials. And since the web session to the Juice Shop website was in plain text, Dylan could have used a network sniffer to intercept the HTTP communications. 
+
+Several servers in the network have Wireshark installed. This may have been the reason Dylan used MS10 in the first place. He could take advantage of existing software without having to attempt to install a sniffer himself. 
+
+Enter 
+```cmd
+dir /s *.pcapng 
+```
 ![](./images/82.jpg)
+
+This command should produce a result showing that a file named juiceshop.pcapng is present in the c:\Users\dylan\Documents folder. 
+
+Select **Type here to search** from the taskbar, enter wireshark, select **Wireshark** from the results. 
+
 ![](./images/83.png)
+
+Maximize the Wireshark window. 
+
+Select **File** from the menu bar of Wireshark, then select **Open**. 
+
 ![](./images/84.jpg)
-![](./images/85.jpg)
+
+On the Wireshark - Open Capture File window, select **This PC** from the left side. 
+
+Scroll down, then double-click **Local Disk (C:)**. 
+
+Scroll down, then double-click **Users**. 
+
+Double-click **dylan**. 
+
 ![](./images/86.png)
+
+Select **Continue** on the dylan window which claims you don't have permission to access this folder.
+
+![](./images/85.jpg)
+
+We are logged in as the administrator. This warning message is to inform us that we are entering into a user's home folder. 
+
+On the User Account Control window, select **Yes** to allow this app to make changes.
+
 ![](./images/88.png)
+
+Double-click **Documents**.
+
 ![](./images/89.png)
+
+Select **juiceshop**, then select **Open**.
+
 ![](./images/90.png)
+
+The Windows GUI is set to hide file extensions of known file types by default. This is the file named juiceshop.pcapng. 
+
+In the Display filter line where it is currently showing "Apply a display filter … <Ctrl-/>", enter: 
+```text
+http.request.method == "POST". 
+```
 ![](./images/91.jpg)
+
+This operation should implement a display filter so as to only show results for HTTP communications that contain POST methods. There should be two results. 
+
+The Wireshark display filters are case-sensitive, so this must be entered as shown. 
+
+There are several HTTP communication methods, including GET and POST. GET is typically used when requesting a URL from a web server. POST is typically used to send information, such as login credentials or form field values, to the web server for processing. 
+
+Select the second result which has "/rest/user/login" in the Info column.
+
 ![](./images/92.jpg)
+
+This packet is the transaction of user credentials from the user's browser to the web server. 
+
+In the bottom pane of Wireshark, known as the Packet Bytes pane, scroll down to view the end of the payload of the selected packet. Pay attention to the right column, which is the ASCII conversion of the raw data (presented in hex) from the middle column of the bottom pane. 
+
 ![](./images/93.png)
 
----
+What is the username/email address contained in this HTTP POST message?
 
+What is the password contained in this HTTP POST message?
+ 
+With the discovery of credentials in this network traffic capture, we have the final item of evidence which explains how Dylan was able to log into DC10 as jaime. 
+
+The activities we have performed in this case across these numerous exercises are an example of root cause analysis. An investigation of a security breach is often a bit like a mystery that needs to be solved. Usually we have to start with the final piece of evidence, which is typically the alert that a security violation has occurred, and work our way back to learn the details about the breach, such as what happened and who the perpetrator was. Often, an investigation will take considerable effort to differentiate benign details from actual evidence of the violation. We may find ourselves backtracking numerous times after following clues to a dead end or needing to retrace our steps to review prior evidence in light of new information. 
+
+Once we have concluded a root cause analysis investigation, we typically need to write up a report to provide to the CISO. This report should detail the evidence discovered and the conclusions. It is also typical to include recommendations on response strategies to the security violation to mitigate future similar incidents. 
+
+For this incident, there are many possible recommendations for security improvements that would have stopped this overall attack from succeeding. Some mitigation strategies include: 
+
+Improved security awareness training for all personnel in regard to detecting and resisting social engineering attacks. 
+
+Blocking scripts from running unless they are pre-approved by an allow-listing execution filter. 
+
+Block changes to network configurations, such as proxies, to user browsers or client systems in general. 
+
+Do not allow non-administrators to enter a data center. 
+
+Do not allow non-administrators to log directly into a server (i.e., interactive logins) 
+
+Do not allow administrators to use RDP to connect to servers. 
+
+Encourage users to use a credential manager to minimize the occurrence of submitting credentials to a site or service that are associated with a different site or service. 
+
+Fortunately, reasonable levels of logging were enabled on most systems (at least before the attack), and an automated security assessment platform (i.e., wazuh) was present and active. This was essential to be alerted about the violating activity as well as providing a majority of the evidence related to the activity of the perpetrator. 
+
+There are at least two additional unanswered questions in regard to this security incident. 1) Why did Dylan violate security in this manner? and 2) What did Dylan do after he disabled auditing on DC10? In many real-world investigations, we don't ever really learn the answer to the "Why" question. But, you may have to spend considerable effect to track down non-log file evidence to answer the latter question. 
+
+However, this is the conclusion of this case and this simulated security violation event.
+
+---
 
 ## Key Takeaways
 - Time‑boxing first reduces noise and speeds attribution
 - Correlate identity + process to reach a reliable root cause
 - Capture evidence as you go to avoid rework
+
+## Quick Quiz — RCA & IR
+
+<details>
+  <summary><strong>1) In the attack scenario of this lab, the investigation determined that which user account had the privileges to disable auditing on DC10?</strong></summary>
+
+<details><summary>dylan</summary>❌ Incorrect</details>
+<details><summary>jaime</summary>✅ Correct</details>
+<details><summary>MS10</summary>❌ Incorrect</details>
+<details><summary>root</summary>❌ Incorrect</details>
+</details>
+
+---
+
+<details>
+  <summary><strong>2) Which event in the security violation took place first?</strong></summary>
+
+<details><summary>Jaime visiting the Juice Shop website</summary>❌ Incorrect</details>
+<details><summary>Dylan accessing DC10 over RDP</summary>❌ Incorrect</details>
+<details><summary>Changing the proxy settings of Firefox</summary>✅ Correct</details>
+<details><summary>Theft of Jaime's credentials</summary>❌ Incorrect</details>
+</details>
+
+---
+
+<details>
+  <summary><strong>3) What is a basic description of a logon of type 2?</strong></summary>
+
+<details><summary>Network</summary>❌ Incorrect</details>
+<details><summary>Unlock</summary>❌ Incorrect</details>
+<details><summary>RemoteInteractive</summary>❌ Incorrect</details>
+<details><summary>Interactive</summary>✅ Correct</details>
+</details>
+
+---
+
+<details>
+  <summary><strong>4) Which of the following security resolutions or mitigations would be sufficient to have prevented the audit policy changes on DC10?</strong></summary>
+
+<details><summary>Block the execution of unknown code</summary>✅ Correct</details>
+<details><summary>Disable RDP access to domain controllers</summary>❌ Incorrect</details>
+<details><summary>Enable additional logging on all systems</summary>❌ Incorrect</details>
+<details><summary>Use security cameras and personnel tracking technologies</summary>❌ Incorrect</details>
+</details>
+
+---
+
+<details>
+  <summary><strong>5) What is the goal of root cause analysis?</strong></summary>
+
+<details><summary>Identify the perpetrator</summary>❌ Incorrect</details>
+<details><summary>Determine the initial parameters of a security violation</summary>✅ Correct</details>
+<details><summary>Install patches to address vulnerabilities</summary>❌ Incorrect</details>
+<details><summary>Place blame on victims for falling for a social engineering attack</summary>❌ Incorrect</details>
+</details>
+
+
