@@ -589,23 +589,157 @@ Based on the additional evidence gathered from PC10, we know that Jaime was the 
 
 ## Continuing the investigation on ROUTER-BORDER
 
+In an attempt to confirm whether Jaime clicked on the link to the Juice Shop website, we will continue the root cause investigation on the company's network firewall system, ROUTER-BORDER. This system is located between the private network and the internet. 
+
+Switch to the KALI virtual machine and, if needed, sign in as root. 
+
+We will be returning to Kali, the cybersecurity workstation, to use a web browser to access the GUI management interface of the ROUTER-BORDER system. While we could connect directly to that system, you would be limited to the CLI, and accessing the log details is significantly more cumbersome using that method. 
+
+Open a Terminal window by selecting the **Terminal Emulator** from the Kali Linux toolbar (located at the top of the screen by default). This icon looks like a black computer screen with a cursor. 
+
 ![](./images/60.png)
+
+In the Terminal window, enter: 
+```bash
+ping juiceshop.com -c 1
+```
 ![](./images/61.jpg)
+
+This command performs a single ping against juiceshop.com. This results in a presentation of the resolved IP address associated with that FQDN. Note the IP address resolved from juiceshop.com. 
+
+Juice Shop IP address: 203.0.113.228 
+
+Switch to the Firefox browser and open a new tab. 
+
+On the new tab, enter **10.1.128.253** into the address bar. 
+
+while working on this i came across an error message of **The connection was reset** instead of the OPNSense interface (or the "Warning: Potential Security Risk Ahead" page), I needed to perform the following steps before continuing. 
+
+The ROUTER-BORDER firewall may become unresponsive due to the condition that its state was saved after the malicious activities were performed on 3/31/2023. When it booted for the current use, it may become unresponsive due to the time and date differences. 
+
+We will witch to the **ROUTER-BORDER**. 
+
+If the ROUTER-BORDER system is not operating properly, it may have an error display similar to the following screenshot: 
+
 ![](./images/62.jpg)
+
+Press Enter to trigger the display of the login: prompt. 
+
+If the prompt shown is instead Password:, press **Enter** again. This will result in a Login incorrect error and the presentation of the Login: prompt. 
+
 ![](./images/63.png)
+
+Enter **root** at the Login: prompt. 
+
+Enter the Password: prompt.
+
 ![](./images/64.png)
+
+A menu of options will be displayed. 
+
+Enter **6**, then enter **y** to reboot the ROUTER-BORDER system. 
+
 ![](./images/65.png)
+
+Wait for the reboot process to complete. When we see the Login: prompt again.
+
 ![](./images/66.png)
+
+Switch back to KALI and refresh Firefox. 
+
+If an "Warning: Potential Security Risk Ahead" page is displayed when attempting to access 10.1.128.253, select **Advanced**, scroll down, and then select **Accept the Risk and Continue**.
+
 ![](./images/67.png)
+
+This message appears because the certificates used by OPNSense automatically rotated on a regular basis. Therefore, each time this happens, it will not be recognized by the browser as a known entity. 
+
+On the OPNsens login page, enter **root** in the Username: field and the Password field.
+
 ![](./images/68.png)
+
+In the left pane, select **Firewall**, then select **Log Files** in the expanded options under Firewall, then select **Live View** in the expanded options under Log Files. 
+
 ![](./images/69.png)
+
+At the top of the Firewall: Log Files: Live View page, there is a filtering rule configuration toolbar. Select the left field currently displaying **action**, then select **dst** from the pull-down list of options. 
+
 ![](./images/70.jpg)
+
+The dst filter option is for the destination IP address. 
+
+Leave the operator as contains. 
+
+Enter **203.0.113.228** in the right field, replacing the current value of pass. 
+
 ![](./images/71.jpg)
+
+Select + to implement the filter.
+
 ![](./images/72.jpg)
+
+If you only see a single result, and that result is the icmp communication we performed just moments ago with the ping command against juiceshop.com, then the default search history depth is too shallow. Just above the results list, to the right, is a pull-down selector that is currently showing a value of **25**. Select **25**, then select **1000** (or if needed, **5000** or even **10000**). 
+
+Create another filter. Select src, then set **10.1.24.101** (the IP address of PC10) as the value, then select + to implement the filter. 
+
+The src filter option is for the source IP address. 
+
 ![](./images/73.jpg)
+
+There should only be one result (if any) a single ICMP event. The lack of other communications indicates that no other direct connections were made from PC10 (10.1.24.101) to juiceshop.com  
+
+(203.0.113.228) occurred. 
+
+Next, let’s check to see if a connection to juiceshop.com from MS10 (10.1.16.2) occurred. 
+
+Select **src~10.1.24.101** from under the filter configuration toolbar to remove it. 
+
+Create another filter. Select **src**, then set **10.1.16.2** (the IP address of MS10) as the value, then select + to implement the filter.
+
 ![](./images/74.jpg)
+
+There should be several results confirming that a connection to juiceshop.com (203.0.113.228) from MS10 (10.1.16.2) did occur. This is, therefore, some evidence that Jaime may have clicked on the Juice Shop link from the scam email. Since his Firefox browser was altered to use 10.1.16.2 as a proxy, his web communications would have been routed through MS10. 
+
+Select the **information** icon on the right side of one of the filter results to open the details for the communication.
+
 ![](./images/75.jpg)
+
+Review the details of the communication between 10.1.16.2 and 203.0.113.228. Notice the dstport value. Note the destination port number: 
+
+Destination port number: 80 
+
+Quick Quiz
+
+<details>
+  <summary><strong>The dstport value for one of the logged events between 10.1.16.2 and 203.0.113.228 indicates what about the transaction?</strong></summary>
+
+<details><summary>It was an encrypted session.</summary>❌ Incorrect — encrypted web sessions typically use HTTPS on port **443**. :contentReference[oaicite:0]{index=0}</details>
+
+<details><summary>It was an email transaction.</summary>❌ Incorrect — SMTP email commonly uses port **25** (and 587/465 for submission). :contentReference[oaicite:1]{index=1}</details>
+
+<details><summary>It was a plaintext communication.</summary>✅ Correct — HTTP on port **80** is unencrypted/cleartext. :contentReference[oaicite:2]{index=2}</details>
+
+<details><summary>It was an FTP session.</summary>❌ Incorrect — FTP control/data use ports **21/20** (or passive data ports). :contentReference[oaicite:3]{index=3}</details>
+</details>
+
+Notice the timestamp of the event. It likely has a value of or is similar to 2023-04-01T00:54:25
+
 ![](./images/76.jpg)
+
+This may seem odd at first. However, the firewall uses UTC time, while the other systems and their log files use local time. The DC10, MS10, and PC10 systems use the Pacific US timezone. To convert UTC to Pacific, we must subtract 7 hours. So, the firewall's time stamp, when adjusted for the local time zone, is 2023-03-31T17:54:25 (i.e., 5:54 PM today (assuming as we are that today is 3/32/2023)). Therefore, this event fits in the timeline of the events discovered so far: 
+
+Dylan logs into MS10 
+
+Dylan (assumed) sent a spoofed scam email to Jaime 
+
+Jaime downloaded and ran the malicious script from the scam email, which changed their proxy settings. 
+
+Jaime visited the Juice Shop website by way of an unauthorized proxy service on MS10. 
+
+Dylan logs into DC10 via RDP using jaime's credentials. Dylan disabled auditing on DC10. 
+
+Leave all windows open. 
+
+It seems like we have almost figured out the exploitation timeline and the TTPs (tactics, techniques, and procedures) of the attack. However, we still have not determined how Dylan obtained the credentials for the jaime account. Since the communication from PC10 to the Juice Shop website was redirected through MS10 and that connection was in plain text, we shuld have an idea of how Dylan may have accomplished credential theft. The investigation takes us back to MS10.
 
 ---
 
