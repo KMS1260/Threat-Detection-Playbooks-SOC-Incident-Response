@@ -237,19 +237,131 @@ After your review of the security alerts related to the audit policy changes, yo
 
 ## Investigate the breach on DC10
 
+we will now switch over to the DC10 system to continue the root cause investigation. In this part, we will determine what audit policies were changed and inspect the Security log of DC10 for more information. 
+
+Connect to the DC10 virtual machine. sign in as Administrator. 
+
 ![](./images/25.jpg)
+
+Minimize or close **Server Manager** if it appears. It will not be used in this exercise. 
+
+You want to determine the state of the audit policy on DC10. 
+
+Select **Type here to search** from the taskbar, enter **cmd**, right-click over **Command Prompt** from the results, and then select **Run as administrator**. 
+
 ![](./images/27.png)
+
+Select **Yes** on the User Account Control window. 
+
+Maximize the Command Prompt window. 
+
+Enter 
+```cmd
+auditpol /get /category:* 
+```
 ![](./images/28.jpg)
+
+Scroll to view the entire list of audit policy status report lines.
+
 ![](./images/29.jpg)
+
+Quick Quiz 
+
+<details>
+  <summary><strong>What is the status of the audit policies on DC10?</strong></summary>
+
+<details><summary>Success and Failure</summary>❌ Incorrect</details>
+
+<details><summary>Success</summary>❌ Incorrect</details>
+
+<details><summary>Failure</summary>❌ Incorrect</details>
+
+<details><summary>No Auditing</summary>✅ Correct — the current audit policy reports <em>No Auditing</em> for the relevant categories (see <code>auditpol /get /category:*</code> output).</details>
+</details>
+
+Close the Command Prompt window. 
+
+Select **Type here to search** from the taskbar, enter **Event** and then select **Event Viewer**.
+
 ![](./images/30.png)
+
+Maximize the Event Viewer. 
+
+In the left pane, double-click **Windows logs** to expand it. 
+
 ![](./images/31.jpg)
+
+In the expanded list, select **Security**.
+
 ![](./images/32.jpg)
+
+Select the topmost event record, then select **Find…** from the right pane.
+
 ![](./images/33.jpg)
+
+In the Find what: field type 17526, then select **Find Next**.
+
 ![](./images/34.png)
+
+This is the Event Record ID for the first audit policy change event you pulled from the wazuh security alert. 
+
+The Find function should have located a matching event record. Select Cancel to close the Find window. 
+
+The event record with an Event Record ID of 17526 should be selected. 
+
+Notice that this event record has an Event ID of 4719. The selected event record is the last in a series of event records with this same Event ID. This is the same collection of records that triggered the audit policy change security alerts in wazuh
+
 ![](./images/36.jpg)
+
+The Event Record ID is located in the event record, but it is not displayed or viewable by default. To view the location in the event record where the Event Record ID is stored, select the Details tab, then select to expand the + **System** item, then scroll down to view the EventRecordID value line. 
+
+An Event ID is a reference to a type of occurrence that was recorded in an event log. These are standard references established by Microsoft. An Event Record ID is a unique number assigned to each event record as it is added to the log in sequential order. 
+
 ![](./images/37.jpg)
+
+We will take note of the time of the first of the event records related to the audit policy changes. That time is 05:56:05 PM (or 17:56:05). 
+
+We want to view the event record of the logon event for the jaime account that occurred just before the audit policy changes. Select **Find…** from the right pane, then type 17464 into the Find what: field, then select **Find Next**. 
+
+This is the Event Record ID for the RDP session where the jaime account connected to DC10. You pulled this number from the wazuh security alert. 
+
 ![](./images/39.png)
+
+The Find function should have located a matching event record. Select Cancel to close the Find window. 
+
+Note it’s very important to know logon types to find out how the device was accessed which would help a lot with the investigation here is a link to windows website explaining more https://learn.microsoft.com/en-us/windows-server/identity/securing-privileged-access/reference-tools-logon-types  
+ 
+The event record with an Event Record ID of 17464 should be selected. Look over the information for this event record on the General tab. 
+
+The General tab has a scrollable window of information. Be sure to scroll through this collection of details so you don't overlook something important. 
+
+Quick Quiz 
+
+<details>
+  <summary><strong>What is the Logon Type for this event record related to the <em>jaime</em> connection over RDP?</strong></summary>
+
+<details><summary>2</summary>❌ Incorrect — 2 = Interactive (local console).</details>
+
+<details><summary>3</summary>❌ Incorrect — 3 = Network (non-interactive access).</details>
+
+<details><summary>7</summary>❌ Incorrect — 7 = Unlock (workstation unlock).</details>
+
+<details><summary>10</summary>✅ Correct — 10 = RemoteInteractive (RDP/Terminal Services). <sub>(See Microsoft/industry refs mapping Logon Type 10 to RDP.)</sub></details>
+</details>
+
+The Security log records logon events and categorizes them based on the following types: 
+
+This record confirms what the wazuh security alert indicated specifically, that the RDP connection to DC10 was initiated from 10.1.16.2, which is the MS10 system.
+
 ![](./images/40.png)
+
+we decide it is time to talk with Jaime directly to inquire about these events and alerts. However, before we contact HR and the physical security team, we look up the work schedule to determine whether Jaime is at work or not. The schedule shows that Jaime was at work today, but that his day likely ended at 6 PM and he may have already left. 
+
+we decide to look up badge access uses for Jaime to see which buildings and data center rooms he entered today. The records show that Jaime only entered the building where his office is located, and there are no data center room entries recorded for him for today (3/31/2023). Since MS10 is located in a data center of a different building on the company campus, it is unlikely that Jaime was able to work from MS10. Also, we see that Jaime has already left for the day. we decide to continue to investigate the issue before contacting HR, legal, and physical security. 
+
+we need to find more evidence to determine what happened and why. we would like to determine what happened before the RDP connection was established from MS10 to DC10. we continue the investigation on MS10. 
+
+Leave the Event Viewer open. 
 
 ---
 
