@@ -107,7 +107,7 @@ The rogue process will immediately begin to consume most of the CPU. This will c
 
 ---
 
-<strong>Playbook Step 1</strong>
+<strong>## Playbook Step 1</strong>
 
 Investigate High CPU usage 
 
