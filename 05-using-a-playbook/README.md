@@ -113,49 +113,49 @@ Investigate High CPU usage
 
 ---
 
-Playbook Step 2
+## Playbook Step 2
 
 Terminate the offending process 
 
 ---
 
-Playbook Step 3
+## Playbook Step 3
 
 Hash the suspicious file 
 
 ---
 
-Playbook Step 4
+## Playbook Step 4
 
 online malware scan
 
 ---
 
-Playbook Step 5
+## Playbook Step 5
 
 Determine the owner of the suspicious file
 
 ---
 
-Playbook Step 6
+## Playbook Step 6
 
 Archive the Suspicious File 
 
 ---
 
-Playbook Step 7
+## Playbook Step 7
 
 Copy the archive to a quarantine system 
 
 ---
 
-Playbook Step 8
+## Playbook Step 8
 
 Remove the suspicious file from the victim 
 
 ---
 
-Playbook Step 9
+## Playbook Step 9
 
 Craft a Report about the Response
 
