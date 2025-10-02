@@ -17,10 +17,13 @@ we will be working from a virtual machine named PC10, hosting Windows Server 201
 - using data sources to support an investigation. 
 - Summering elements of effective security governance. 
 
-## Tools & Techniques
-- Task Manager / Process Explorer
-- CLI: `tasklist`, `wmic`, `taskkill`
-- PowerShell: `Get-Process`, `Stop-Process`
+## Tools & Techniques 
+
+- **Process Explorer** — inspect parent/child tree, handles/DLLs. 
+- **Get-Process** — list target by name/PID; pipe to other cmdlets. 
+- **Stop-Process -Id <PID> -Force** — terminate locally via PowerShell. 
+- **taskkill /pid <PID> /f /t** (or `/im <name>.exe`) — kill process/tree. 
+- **Get-FileHash "<path>" -Algorithm SHA256** — capture evidence hash. 
 
 ## Table of Contents
 
@@ -1594,8 +1597,58 @@ Once the report is crafted, it should be submitted to your CISO for review.
 
 ---
 
+## Quick Quiz — Playbook
 
-## Key Takeaways
-- Contain first; analysis can follow
-- Always record hash and file path before removal
-- Quarantine artefacts for later review
+<details>
+  <summary><strong>1) Which of the following playbook tasks must occur before the others?</strong></summary>
+
+<details><summary>Copy the zip archive of the suspicious file to a quarantine system.</summary>❌ Incorrect</details>
+<details><summary>Determine the rogue process's name.</summary>✅ Correct</details>
+<details><summary>Perform an online malware analysis using the hash value of the suspicious file.</summary>❌ Incorrect</details>
+<details><summary>Remove the suspicious file from the affected system(s).</summary>❌ Incorrect</details>
+</details>
+
+---
+
+<details>
+  <summary><strong>2) What asset defines the steps needed to respond to a security incident, such as the specific roles, processes, and procedures that security staff must follow?</strong></summary>
+
+<details><summary>User Acceptance Policy</summary>❌ Incorrect</details>
+<details><summary>Non-Disclosure Agreement</summary>❌ Incorrect</details>
+<details><summary>Playbook</summary>✅ Correct</details>
+<details><summary>Runbook</summary>❌ Incorrect</details>
+</details>
+
+---
+
+<details>
+  <summary><strong>3) A playbook is often considered what type of security control?</strong></summary>
+
+<details><summary>Deterrent</summary>❌ Incorrect</details>
+<details><summary>Preventive</summary>❌ Incorrect</details>
+<details><summary>Responsive</summary>✅ Correct</details>
+<details><summary>Detective</summary>❌ Incorrect</details>
+</details>
+
+---
+
+<details>
+  <summary><strong>4) What security solution scans security and threat intelligence data collected from multiple sources within the enterprise, then analyzes it using various techniques, and may trigger responses to take corrective action against discovered security violations?</strong></summary>
+
+<details><summary>SOAR</summary>✅ Correct</details>
+<details><summary>SIEM</summary>❌ Incorrect</details>
+<details><summary>UEBA</summary>❌ Incorrect</details>
+<details><summary>NGFW</summary>❌ Incorrect</details>
+</details>
+
+---
+
+<details>
+  <summary><strong>5) Which of the following are true statements in regard to playbooks? (Select all that apply)</strong></summary>
+
+<details><summary>Generally, a playbook is used by a person, and a runbook is used by a SOAR platform in response to an incident or alert.</summary>✅ Correct</details>
+<details><summary>When creating an incident response playbook, organizations should ensure they have the right level of detail and that all necessary stakeholders are involved.</summary>✅ Correct</details>
+<details><summary>The most effective incident response playbooks are tailored to an organization's specific security needs.</summary>✅ Correct</details>
+<details><summary>A playbook is designed to automate some of the routine tasks ordinarily performed by security personnel in response to a security incident.</summary>❌ Incorrect</details>
+</details>
+
