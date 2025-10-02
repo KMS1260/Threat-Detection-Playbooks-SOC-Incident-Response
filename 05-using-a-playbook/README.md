@@ -119,18 +119,16 @@ In this High-CPU IR Playbook step, we will determine which rogue process is cons
 
 Make a selection of the method to use to accomplish this initial task. The method options are: 
 
-GUI - using the Windows Task Manager 
-
-CLI - using the CLI Command Prompt wmic utility 
-
-Third-party - using the Sysinternals GUI tool Process Manager 
+- GUI - using the Windows Task Manager 
+- CLI - using the CLI Command Prompt wmic utility 
+- Third-party - using the Sysinternals GUI tool Process Manager 
 
 You can review the offered methods using the pull-down list below before making a final selection to work through. 
 
 Security Orchestration, Automation, and Response (SOAR) is a security solution whose purpose is to scan security and threat intelligence data collected from multiple sources within the enterprise and then analyze it using various techniques. A SOAR can also assist with provisioning tasks, such as creating and deleting user accounts, making shares available, or launching VMs from templates. The SOAR will use technologies such as cloud and SDN/SDV APIs, orchestration tools, and cyber threat intelligence (CTI) feeds to integrate the different systems it manages. It will also leverage technologies such as automated malware signature creation and user and entity behavior analytics (UEBA) to detect and identify threats. The automated actions performed by a SOAR are to be documented in runbooks. However, when the SOAR fails to operate properly, security personnel can use a playbook to perform manually the actions that the SOAR would have automated. 
 
 <details>
-<summary>Choose a method</summary>
+<summary><strong>Choose a method</strong></summary>
 
 <details>
  <summary>Use GUI Task Manager</summary>
@@ -247,55 +245,231 @@ Sysinternals, at sysinternals.com, is a Microsoft website that offers technical 
 
 <strong>Terminate the offending process</strong>
 
+The next step of the High-CPU IR Playbook is: 
+
+Terminate the offending process. 
+
+In this High-CPU IR Playbook step, we will terminate the rogue process named HeavyLoad. 
+
+Make a selection of the method to use to accomplish this task. The method options are: 
+
+- GUI - using the Windows Task Manager 
+- CLI-CP - using taskkill from a Command Prompt 
+- CLI-PS - using Stop-Process from a PowerShell console. 
+- Third-party-CLI - using the Sysinternals CLI tool pskill. 
+- Third-party-GUI - using the Sysinternals GUI tool Process Manager. 
+
+Incident response playbooks are an invaluable tool for organizations to quickly and efficiently respond to security incidents. With an incident response playbook, organizations can define the steps they need to take to respond to a security incident, such as the specific roles, processes, and procedures that security staff must follow. Incident response playbooks can also guide communication with stakeholders and the public, as well as how to gather evidence and determine the incident's root cause. Oftentimes, the playbook is just that-a physical book a security professional uses in response to an incident. Using a physical book ensures its availability during a wide-scale incident. In a highly secure environment, it also ensures attackers do not digitally exfiltrate the IR capabilities.
+
 <details>
- <summary>Choose a method</summary>
+ <summary><strong>Choose a method</strong></summary>
 
 <details>
  <summary>Use GUI Task Manager</summary>
+
+Return to the **Task Manager**, which may have been left open from a previous playbook activity. 
  
 ![](./images/14.jpg)
+
+If the Task Manager is not open, select **Type here to search** from the taskbar, type task, then select **Task Manager** from the results. 
+
+Right-click the **HeavyLoad** process, then select **End Task**.
+
 ![](./images/15.jpg)
+
+The HeavyLoad process should no longer be visible in the list of processes in Task Manager. 
+
+If there are multiple instances of the HeavyLoad process, then we will need to kill each one. 
+
+Close Task Manager. 
+We have completed this playbook step using the GUI Task Manager. 
 
 </details>
 
 <details>
  <summary>Use CLI Command Prompt tool taskkill</summary>
 
+Return to the **Command Prompt window**, which may have been left open from a previous playbook activity. 
+
 ![](./images/16.png)
+
+If the Command Prompt window is not open, select **Type here to search** from the taskbar, enter cmd, right-click **Command Prompt** from the results, then select **Run as administrator**. Then, select **Yes** on the User Account Control window. 
+
+Enter: 
+```cmd
+tasklist /FI "IMAGENAME eq HeavyLoad.exe" 
+```
+
+This command will display information about the named process. 
+
 ![](./images/17.jpg)
+
+Take note of the process ID: 
+
+HeavyLoad PID: 736 
+
+Enter: 
+```cmd
+taskkill /PID 736 /F
+```
 ![](./images/18.jpg)
+
+This command terminates the HeavyLoad process referenced by the PID of 736. 
+
+Enter tasklist /FI "IMAGENAME eq HeavyLoad.exe" again to confirm the process is no longer active.
+```cmd
+tasklist /FI "IMAGENAME eq HeavyLoad.exe"  
+```
 ![](./images/19.png)
+
+This command should display the message: "INFO: No tasks are running that match the specified criteria.". 
+
+Leave the Command Prompt window open. You may use it in a later playbook step. 
+
+We have completed this playbook step using the CLI Command Prompt tool taskkill. 
  
 </details>
 
 <details>
  <summary>Use CLI PowerShell cmdlet Stop-Process</summary>
 
+Select **Type here to search** from the taskbar, type powershell, right-click **Windows PowerShell** from the results, then select **Run as administrator**. 
+
 ![](./images/20.png)
+
+Select **Yes** on the User Account Control window. 
+
 ![](./images/21.png)
+
+The Windows PowerShell console should be displayed. 
+
+Enter: 
+```powershell
+Get-Process HeavyLoad 
+```
 ![](./images/22.jpg)
+
+This command will display information about the named process. 
+
+Take note of the process ID: 
+
+HeavyLoad PID: 3556 
+
+Enter 
+```powershell
+Stop-Process -Id 3556 –Force
+```
 ![](./images/23.png)
+
+This command terminates the HeavyLoad process referenced by the PID of 3556. 
+
+Enter Get-Process HeavyLoad again to confirm the process is no longer active.
+```powershell
+Get-Process HeavyLoad
+```
 ![](./images/24.jpg)
+
+This command should display the message: "Get-Process : Cannot find a process with the name "HeavyLoad".". 
+
+Terminating a process through Windows PowerShell with only the process name is also possible. In this scenario, the command would be Stop-Process -Name HeavyLoad -Force. 
+
+Leave the Windows PowerShell console open. 
+
+We have completed this playbook step using the CLI PowerShell cmdlet Stop-Process. 
  
 </details>
 
 <details>
  <summary>Use third-party CLI pskill utility</summary>
 
+Return to the **Command Prompt** window, which may have been left open from a previous playbook activity.
+
 ![](./images/25.png)
+
+If the **Command Prompt** window is not open, select **Type here to search** from the taskbar, enter cmd, right-click **Command Prompt** from the results, then select **Run as administrator**. Then, select **Yes** on the User Account Control window. 
+
+Enter: 
+```cmd
+cd C:\sysinternals
+```
 ![](./images/26.png)
+
+Enter: 
+```cmd
+pslist HeavyLoad
+```
 ![](./images/27.jpg)
+
+This command will display information about the named process. 
+
+Take note of the process ID: 
+
+HeavyLoad PID: 4892 
+
+Enter:
+```cmd
+pskill 4892
+```
 ![](./images/28.png)
+
+This command terminates the HeavyLoad process referenced by the PID of 4892. 
+
+Enter pslist HeavyLoad again to confirm the process is no longer active.
+```cmd
+pslist HeavyLoad
+```
 ![](./images/29.png)
+
+This command should display the message: "process HeavyLoad was not found on PC10"". 
+
+Leave the Command Prompt window open. You may use it in a later playbook step. 
+
+We have completed this playbook step using the third-party CLI utility pskill from Microsoft's Sysinternals. 
  
 </details>
 
 <details>
  <summary>Use third-party GUI Process Explorer</summary>
 
+Return to **Process Explorer**, which may have been left open from a previous playbook activity. 
+
+Expand this hint if Process Explorer is not open. 
+
+Select **Type here to search** from the taskbar, type file, then select **File Explorer** from the results. 
+
+The File Explorer window should be displayed. 
+
+In the left pane, select **SYSINTERNALS**. 
+
+The contents of the C:\SYSINTERNALS folder will be displayed in the right pane. 
+
+In the search field at the top right of the File Explorer window, where it currently displays Search SYSINTERNALS*, enter procexp. 
+
+There should be three results. 
+
+Double-click **procexp64** from the search results. 
+
+The Process Explorer utility from Sysinternals should be displayed. 
+
+Leave File Explorer open.  
+
+Right-click the **HeavyLoad** process, then select **Kill Process**. 
+
 ![](./images/30.jpg)
+
+Select **OK** on the confirmation window. 
+
 ![](./images/31.png)
+
+The HeavyLoad process should no longer be visible in the list of processes in Process Explorer. 
+
 ![](./images/32.jpg)
+
+Note: If there are multiple instances of the HeavyLoad process, then we would need to kill each one. 
+
+Close Process Explorer. 
+
+We have completed this playbook step using the third-party GUI utility Process Explorer from Microsoft's Sysinternals. 
  
 </details>
  
@@ -307,38 +481,173 @@ Sysinternals, at sysinternals.com, is a Microsoft website that offers technical 
 
 <strong>Hash the suspicious file</strong>
 
+The next step of the High-CPU IR Playbook is: 
+
+Hash the file associated with the rogue process. 
+
+In this High-CPU IR Playbook step, we will locate the file associated with the rogue process named HeavyLoad and calculate a SHA256 hash of the suspicious file. 
+
+Make a selection of the method to use to accomplish these tasks. The method options are: 
+
+- CLI-CP - using CLI Command Prompt tool certutil 
+- CLI-PS - using CLI PowerShell cmdlet Get-FileHash 
+- Third-party - using the Sysinternals CLI tool sigcheck
+
+The most effective incident response playbooks are tailored to an organization's specific security needs and provide detailed guidance on responding to various security incidents. For example, a playbook may contain detailed instructions on responding to a ransomware attack or a data breach. Additionally, the playbook should include guidance on taking the necessary steps to contain the incident, such as isolating affected systems and measures to ensure the incident is fully resolved. 
+
 <details>
- <summary>Choose a method</summary>
+ <summary><strong>Choose a method</strong></summary>
 
 <details>
  <summary>Use CLI Command Prompt tool certutil</summary>
 
+Return to the **Command Prompt** window, which may have been left open from a previous playbook activity. 
+
+If the Command Prompt window is not open, select **Type here to search** from the taskbar, enter cmd, right-click **Command Prompt** from the results, then select **Run as administrator**. Then, select Yes on the User Account Control window. 
+
+Enter: 
+```cmd
+cd c:\ && dir /s HeavyLoad.exe. 
+```
 ![](./images/33.jpg)
+
+This command changes the working or current directory to the root of drive C:\, then searches all sub-folders for the file HeavyLoad.exe. 
+
+There should be two results indicating that HeavyLoad.exe is located in both c:\Users and c:\Program Files\JAM Software\HeavyLoad\. For this case let’s assume the only result is in c:\Users. 
+
 ![](./images/34.png)
+
+**Note**: This command may take up to 1 minute to complete as it is searching the entire drive for the file. You can terminate it using **CTRL+C**. 
+
+Enter: 
+```cmd
+cd c:\Users
+```
 ![](./images/35.png)
+
+This command changes the working directory to c:\Users. 
+
+Enter: 
+```cmd
+certutil -hashfile "c:\Users\HeavyLoad.exe" SHA256 > c:\Users\HeavyLoad-Hash.txt
+```
 ![](./images/36.jpg)
+
+This command will calculate the SHA256 hash of the suspicious executable and save it in an output file. 
+
+Enter: 
+```cmd
+type HeavyLoad-Hash.txt
+```
 ![](./images/37.png)
+
+This command displays the contents of the output file, which is the SHA256 hash of the suspicious executable. 
+
+Leave the Command Prompt window open. 
+ 
+We have completed this playbook step using the CLI Command Prompt tool certutil. 
  
 </details>
 
 <details>
  <summary>Use CLI PowerShell cmdlet Get-FileHash</summary>
 
+Return to the **Windows PowerShell** console, which may have been left open from a previous playbook activity. 
+
+If the Windows PowerShell console is not open, select **Type here to search** from the taskbar, type powershell, right-click **Windows PowerShell** from the results, select **Run as administrator**, then, select Yes on the User Account Control window. 
+
+The Windows PowerShell console should be displayed. 
+
+Enter: 
+```powershell
+cd c:\; Get-ChildItem -Path "C:\" -Recurse -File -ErrorAction SilentlyContinue | Where-Object { $_.Name -eq "HeavyLoad.exe" }
+```
 ![](./images/38.jpg)
+
+This command changes the working or current directory to the root of drive C:\, then searches all sub-folders for the file HeavyLoad.exe.
+
+There should be a result indicating that HeavyLoad.exe is located in both C:\Users and C:\Program Files\JAM Software\HeavyLoad\. For this case let’s assume the only result is located in c:\Users. 
+
 ![](./images/39.png)
+
+This command may take up to 1 minute to complete as it is searching the entire drive for the file. You can terminate it using **CTRL+C**. 
+
+Enter: 
+```powershell
+cd C:\Users
+```
 ![](./images/40.png)
+
+This command changes the working directory to c:\Users. 
+
+Enter: 
+```powershell
+Get-FileHash -Path "c:\Users\HeavyLoad.exe" -Algorithm SHA256 > c:\Users\HeavyLoad-Hash.txt 
+```
 ![](./images/41.png)
+
+This command will calculate the SHA256 hash of the suspicious executable and save it in an output file. 
+
+Enter: 
+```powershell
+type HeavyLoad-Hash.txt 
+```
 ![](./images/42.jpg)
+
+This command displays the contents of the output file, which is the SHA256 hash of the suspicious executable. 
+
+Leave the Windows PowerShell console open. You may use it in a later playbook step. 
+
+We have completed this playbook step using the CLI PowerShell cmdlet Get-FileHash. 
  
 </details>
 
 <details>
  <summary>Use third-party CLI tool sigcheck</summary>
 
+Return to the **Command Prompt** window, which may have been left open from a previous playbook activity. 
+
+If the Command Prompt window is not open, select **Type here to search** from the taskbar, enter cmd, right-click **Command Prompt** from the results, then select **Run as administrator**. Then, select Yes on the User Account Control window. 
+
+Enter: 
+```cmd
+cd c:\ && dir /s HeavyLoad.exe
+```
 ![](./images/43.png)
+
+This command changes the working or current directory to the root of drive C:\, then searches all sub-folders for the file HeavyLoad.exe. 
+
+This command may take up to 1 minute to complete as it is searching the entire drive for the file. You can terminate it using **CTRL+C**. 
+
+Enter: 
+```cmd
+cd c:\Users
+```
 ![](./images/44.png)
+
+This command changes the working directory to c:\Users\SigCheck\ 
+
+Enter 
+```cmd
+C:\Users\Sigcheck>sigcheck -h C:\Users\HeavyLoad.exe > C:\Users\HeavyLoad-Hash.txt 
+```
 ![](./images/45.png)
+
+This command will calculate the SHA256 hash of the suspicious executable and save it in an output file. 
+
+**Note** there are few Steps to follow and to know before using sigcheck i recommend watching this Youtube video https://www.youtube.com/watch?v=PPaDb9HWq9U  
+
+Enter: 
+```cmd
+type HeavyLoad-Hash.txt 
+```
 ![](./images/46.png)
+
+This command displays the contents of the output file, which is the SHA256 hash of the suspicious executable. 
+
+This command may take up to 1 minute to complete as it is calculating several hashes simultaneously. 
+
+Leave the Command Prompt window open.  
  
 </details>
 
@@ -351,16 +660,39 @@ Sysinternals, at sysinternals.com, is a Microsoft website that offers technical 
 <strong>online malware scan</strong>
 
 <details>
- <summary>Choose a method</summary>
+ <summary><strong>Choose a method</strong></summary>
 
 <details>
  <summary>Use Hybrid Analysis</summary>
+ 
+Using Chrome or Firefox open a browser. 
 
+In the browser’s address bar, Enter: https://www.hybrid-analysis.com/ 
 
 ![](./images/47.jpg)
+
+The Hybrid Analysis website should be displayed. 
+
+Select the **Report Search** tab. 
+
 ![](./images/48.png)
+
+Type the following hash into the **IP, Domain, Hash…** field, then select **Search**. 
+```text
+705204f80158bfbf9216a19bc2cb25a392ff028ce028745ac16f543b6290ec81 
+```
 ![](./images/49.jpg)
+
+The results of the online malware search will be displayed. 
+
 ![](./images/50.png)
+
+Close the tab in your local browser focused on Hybrid Analysis. 
+
+Since the malware hash scan results are indeterminate, we do not know if the suspicious file is benign or is a new unknown malicious file. Therefore, we will continue forward with the next playbook step. 
+
+To see actual results from this site, repeat the search using the hash of 82407eaf6437d6956f63e85b28c0ec6ca58d298a. This is the hash of ca_setup.exe, the installer for the password cracking and network attack tool Cain. Cain is considered by many to be a hacker tool and potentially malicious. 
+
 ![](./images/51.jpg)
  
 </details>
@@ -368,8 +700,30 @@ Sysinternals, at sysinternals.com, is a Microsoft website that offers technical 
 <details>
  <summary>Use MetaDefender</summary>
 
+Using Chrome or Firefox open a browser. 
+
+In the browser’s address bar, Enter: https://metadefender.com/  
+
+The MetaDefender website from OPSWAT should be displayed. 
+
+Select the **Lookup** tab. 
+
 ![](./images/52.png)
+
+Type the following hash into **Trust no** field, then select Process:
+```text
+705204f80158bfbf9216a19bc2cb25a392ff028ce028745ac16f543b6290ec81
+```
 ![](./images/53.jpg)
+
+The results of the online malware search will be displayed. 
+
+Close the browser tab focused on MetaDefender. 
+
+Since the malware hash scan results are indeterminate, we do not know if the suspicious file is benign or is a new unknown malicious file. Therefore, we will continue forward with the next playbook step. 
+
+To see actual results from this site, repeat the search using the hash of 82407eaf6437d6956f63e85b28c0ec6ca58d298a. This is the hash of ca_setup.exe, the installer for the password cracking and network attack tool Cain. Cain is considered by many to be a hacker tool and potentially malicious. 
+
 ![](./images/54.jpg)
  
 </details>
@@ -377,9 +731,34 @@ Sysinternals, at sysinternals.com, is a Microsoft website that offers technical 
 <details>
  <summary>Use VirusTotal</summary>
 
+Using Chrome or Firefox open a browser. 
+
+In the browser’s address bar, Enter: https://www.virustotal.com/ 
+
+The VirusTotal website should be displayed. 
+
+Select the **Search** tab. 
+
 ![](./images/55.png)
+
+Type the following hash into the **URL, IP address, domain, or file hash** field, then press **Enter** on your keyboard. 
+```text
+705204f80158bfbf9216a19bc2cb25a392ff028ce028745ac16f543b6290ec81
+```
 ![](./images/56.png)
+
+The results of the online malware search will be displayed. 
+
 ![](./images/57.png)
+
+Close the tab in your local browser focused on VirusTotal. 
+
+We have completed this playbook step using the online malware analysis service of VirusTotal. 
+
+Since the malware hash scan results are indeterminate, we do not know if the suspicious file is benign or is a new unknown malicious file. Therefore, we will continue forward with the next playbook step. 
+
+To see actual results from this site, repeat the search using the hash of 82407eaf6437d6956f63e85b28c0ec6ca58d298a. This is the hash of ca_setup.exe, the installer for the password cracking and network attack tool Cain. Cain is considered by many to be a hacker tool and potentially malicious. 
+
 ![](./images/58.png)
  
 </details>
@@ -392,36 +771,123 @@ Sysinternals, at sysinternals.com, is a Microsoft website that offers technical 
 
 <strong>Determine the owner of the suspicious file</strong>
 
+The next step of the High-CPU IR Playbook is: 
+
+Determine the owner of the suspicious file. 
+
+In this High-CPU IR Playbook step, you will determine the owner of the suspicious file. 
+
+Make a selection of the method to use to accomplish this task. The method options are: 
+
+- GUI - using File Explorer 
+- CLI-CP - using CLI Command Prompt dir command 
+- CLI-PS - using PowerShell cmdlet Get-ACL 
+
+You can review the offered methods using the pull-down list below before making a final selection to work through. 
+
 <details>
- <summary>Choose a method</summary>
+ <summary><strong>Choose a method</strong></summary>
 
 <details>
  <summary>Use GUI File Explorer</summary>
 
+Return to **File Explorer**, which may have been left open from a previous playbook activity. 
+
+Select **Type here to search** from the taskbar, type file, then select **File Explorer** from the results. 
+
+The File Explorer window should be displayed. 
+
+In the left pane, expand **This PC**, and then select **Local Disk (C:)**. 
+
+The contents of the root of drive C: should be displayed in the right pane. 
+
+In the right pane, double-click **Users**. 
+
+The contents of c:\Users should be displayed in the right pane. 
+
+Right-click HeavyLoad, then select **Properties**. 
+
 ![](./images/59.jpg)
+
+By default, File Explorer does not display the file extensions for known file types. Therefore, instead of seeing HeavyLoad.exe, you only see HeavyLoad. 
+
+Select the **Security** tab on the HeavyLoad Properties window. 
+
 ![](./images/60.png)
+
+Select **Advanced** on the Security tab. 
+
 ![](./images/61.png)
+
+Look over the information on the Advanced Security Settings for HeavyLoad window. 
+
 ![](./images/62.jpg)
+
+Determine the file's owner and enter the name as spelled and capitalized. Note it  
+
+HeavyLoad file owner: SYSTEM 
+
+Select **OK** to close the Advanced Security Settings for HeavyLoad window. 
+
+Select **OK** to close the HeavyLoad Properties window. 
+
+Leave the File Explorer window open. You may use it in a later playbook step. 
+
+We have completed this playbook step using File Explorer. 
  
 </details>
 
 <details>
  <summary>Use CLI Command Prompt dir command</summary>
 
+Return to the **Command Prompt** window, which may have been left open from a previous playbook activity. 
+
+If the Command Prompt window is not open, select **Type here to search** from the taskbar, enter cmd, right-click **Command Prompt** from the results, then select **Run as administrator**. Then, select **Yes** on the User Account Control window. 
+
+Enter:
+```cmd
+dir /q c:\Users\HeavyLoad.exe. 
+```
 ![](./images/63.jpg)
- 
+
+Look over the information presented. 
+
+Determine the file's owner and enter the name as spelled and capitalized. 
+
+HeavyLoad file owner: Guest 
+
+Leave the Command Prompt window open. You may use it in a later playbook step. 
+
 </details>
 
 <details>
  <summary>Use CLI PowerShell cmdlet Get-Acl</summary>
 
+Return to the **Windows PowerShell** console, which may have been left open from a previous playbook activity. 
+
+If the Windows PowerShell console is not open, select **Type here to search** from the taskbar, type powershell, right-click **Windows PowerShell** from the results, select **Run as administrator**, then, select **Yes** on the User Account Control window. 
+
+The Windows PowerShell console should be displayed. 
+
+Enter 
+```powershell
+(Get-Acl -Path "C:\Users\HeavyLoad.exe").Owner 
+```
 ![](./images/64.png)
+
+Look over the information presented. 
+
+Determine the file's owner and enter the name as spelled and capitalized. 
+
+HeavyLoad file owner: Guest 
+
+Leave the Windows PowerShell console open. 
+
+We have completed this playbook step using the CLI PowerShell cmdlet Get-Acl. 
  
 </details>
  
 </details>
-
-
 
 ---
 
@@ -429,37 +895,138 @@ Sysinternals, at sysinternals.com, is a Microsoft website that offers technical 
 
 <strong>Archive the Suspicious File</strong>
 
+The next step of the High-CPU IR Playbook is: 
+
+Archive the suspicious file into a zip container along with a file and its hash value. 
+
+In this High-CPU IR Playbook step, we will create an archive containing the suspicious file and the hash output file. 
+
+Make a selection of the method to use to accomplish this task. The method options are: 
+
+- GUI - using File Explorer 
+- CLI-CP - using CLI Command Prompt tool tar 
+- CLI-PS - using PowerShell cmdlet Compress-Archive 
+
+You can review the offered methods using the pull-down list below before making a final selection to work through. 
+
 <details>
- <summary>Choose a method</summary>
+ <summary><strong>Choose a method</strong></summary>
 
 <details>
  <summary>Use GUI File Explorer</summary>
 
+Return to **File Explorer**, which may have been left open from a previous playbook activity. 
+
+Select **Type here to search** from the taskbar, type file, then select **File Explorer** from the results. 
+
+The File Explorer window should be displayed. 
+
+In the left pane, select **Local Disk (C:)**. 
+
+The contents of the root of drive C: should be displayed in the right pane. 
+
+In the right pane, double-click **Users**. 
+
+The contents of c:\Users should be displayed in the right pane. 
+
+Select HeavyLoad. 
+
+By default, File Explorer does not display the file extensions for known file types. Therefore, instead of seeing HeavyLoad.exe, you only see HeavyLoad. 
+
+Hold down **Shift** on your keyboard, then select **HeavyLoad-Hash**.
+
 ![](./images/65.jpg)
+
+Right-click over HeavyLoad while the two files are selected/highlighted, then select **Send to >**, then select **Compressed (zipped) folder**. 
+
 ![](./images/66.png)
+
+If you right-click over the HeavyLoad-Hash file, then the archive file will have a filename of HeavyLoad-Hash.zip instead of HeavyLoad.zip. 
+
+Select **Yes** on the Compressed (zipped) Folders window, which asks to create the archive file on the desktop. 
+
 ![](./images/67.jpg)
+
+File Explorer does not have permission as a process to create a new file in the c:\Users folder. It also cannot be launched as the administrator. 
+
+In the left pane, select **Desktop**. 
+
 ![](./images/68.jpg)
+
+The contents of the Desktop should be displayed in the right pane. You should see **HeavyLoad**. It should have an icon of a yellow file folder with a zipper and be labeled as Type of Compressed (zipped) Folder. 
+
+Use the click-hold-drag-release method to move HeavyLoad to **Local Disk (C:)**. 
+
 ![](./images/69.jpg)
+
+Select **Continue** on the Destination Folder Access Denied window. 
+
 ![](./images/70.png)
+
+The HeavyLoad file should no longer be displayed in the Desktop folder. 
+
+In the left pane, select **Local Disk (C:)**. 
+
+You should see **HeavyLoad** in the right pane. 
+
 ![](./images/71.png)
+
+Leave File Explorer open.  
+ 
+We have completed this playbook step using File Explorer. 
  
 </details>
 
 <details>
  <summary>Use CLI Command Prompt tool tar</summary>
 
+Return to the **Command Prompt** window, which may have been left open from a previous playbook activity. 
+
+If the Command Prompt window is not open, select **Type here to search** from the taskbar, enter cmd, right-click **Command Prompt** from the results, then select **Run as administrator**. Then, select **Yes** on the User Account Control window. 
+
+Enter: 
+```cmd
+tar -c -a -f "C:\HeavyLoad.zip" "C:\Users\HeavyLoad.exe" "C:\Users\HeavyLoad-Hash.txt" 
+```
 ![](./images/72.jpg)
+
+A message will be displayed of "tar: Removing leading drive letter from member names" 
+
+Enter: 
+```cmd
+dir c:\
+```
 ![](./images/73.jpg)
+
+You should see HeavyLoad.zip in the results of this command. 
+
+Leave the Command Prompt window open.  
+ 
+We have completed this playbook step using the CLI Command Prompt tool tar. 
  
 </details>
 
 <details>
  <summary>Use CLI PowerShell cmdlet Compress-Archive</summary>
 
+Return to the **Windows PowerShell** console, which may have been left open from a previous playbook activity. 
+
+If the Windows PowerShell console is not open, select **Type here to search** from the taskbar, type powershell, right-click **Windows PowerShell** from the results, select **Run as administrator**, then, select **Yes** on the User Account Control window. 
+
+The Windows PowerShell console should be displayed. 
+
+Enter: 
+```powershell
+Compress-Archive –Path “C:Users\HeavyLoad.exe”, “C:\users\HeavyLoad-Hash.txt” -DestinationPath “C:\HeavyLoad.zp” 
+```
+
+Enter:
+```powershell
+dir c:\ 
+```
 ![](./images/74.jpg)
  
-</details>
- 
+ </details> 
 </details>
 
 ---
@@ -468,42 +1035,206 @@ Sysinternals, at sysinternals.com, is a Microsoft website that offers technical 
 
 <strong>Copy the archive to a quarantine system</strong>
 
+The next step of the High-CPU IR Playbook is: 
+
+Copy the zip archive of the suspicious file to a quarantine system. 
+
+In this High-CPU IR Playbook step, we will move the archive of the suspicious file to a quarantine system. In this Step, the quarantine system will be the Kali VM. 
+
+Select the method to use to accomplish this task. The method options are: 
+
+- NC - using Netcat and PowerShell 
+- WinSCP - using WinSCP 
+- SAMBA - Using SAMBA 
+
+You can review the offered methods using the pull-down list below before making a final selection to work through. 
+
 <details>
- <summary>Choose a method</summary>
+ <summary><strong>Choose a method</strong></summary>
 
 <details>
  <summary>Use Netcat and PowerShell</summary>
 
+Connect/access the KALI VM and sign in as **root**.
+
 ![](./images/75.png)
+
+Open a Terminal window by selecting the **Terminal Emulator** from the Kali Linux toolbar 
+
 ![](./images/76.png)
+
+Enter: **mkdir quarantine** to create a directory. 
+```bash
+mkdir quarantine
+```
 ![](./images/77.png)
+
+Enter **cd quarantine** to change into the new folder. 
+```bash
+cd quarantine
+```
 ![](./images/78.jpg)
+
+Enter: 
+```bash
+nc -l -p 1234 > HeavyLoad.zip
+```
 ![](./images/79.jpg)
+
+This command uses Netcat to open a listening port to receive a connection from PC10. Once the connection is established, the data transferred from PC10 will be saved into a file named HeavyLoad.zip on Kali. 
+
+Switch back to the PC10 virtual machine. and sign in as Jaime. 
+
+Return to the **Windows PowerShell** console, which may have been left open from a previous playbook activity. 
+
+If the Windows PowerShell console is not open, select **Type here to search** from the taskbar, type powershell, right-click **Windows PowerShell** from the results, select **Run as administrator**, then, select **Yes** on the User Account Control window. 
+
+The Windows PowerShell console should be displayed. 
+
+Enter the following code into the Windows PowerShell console: 
+```powershell
+$filePath = "C:\HeavyLoad.zip";  
+$destination = "10.1.16.66";  
+$port = 1234;  
+$tcpConnection = New-Object System.Net.Sockets.TcpClient($destination, $port);  
+$netStream = $tcpConnection.GetStream();  
+$buffer = [System.IO.File]::ReadAllBytes($filePath);  
+$netStream.Write($buffer, 0, $buffer.Length);  
+$netStream.Close();  
+$tcpConnection.Close();  
+$?;
+```
 ![](./images/80.png)
+
+This code will send the contents of the C:\HeavyLoad.zip file to the listening service on Kali. 
+
+The final line of the code "&?;" will be left at the Windows PowerShell prompt. Press **Enter** to submit this last line of code. It will present a result of True. 
+
+This code uses PowerShell functions to duplicate the data transfer capability of Netcat. This mechanism can be used from a Windows PowerShell console without needing Netcat present on the local system. 
+
+Switch back to the KALI VM and, if needed, sign in as **root**. 
+
+Notice the Netcat command has completed, and you are returned to the # prompt. 
+
 ![](./images/81.jpg)
+
+Enter **ls -l** to view the long list of the current directory. 
+```bash
+ls -l
+```
 ![](./images/82.jpg)
+
+You should see the HeavyLoad.zip file is now present on the Kali system. 
+
+Enter **unzip -t HeavyLoad.zip** to test and verify the file transferred properly.
+```bash
+unzip -t HeavyLoad.zip
+```
 ![](./images/83.png)
+
+The result should indicate "No errors detected in compressed data of HeavyLoad.zip." 
+
+Switch back to the PC10 virtual machine. and sign in as Jaime. 
+
+This VM switch back is needed to keep each playbook step transition consistent. 
+
+Leave the Windows PowerShell console open.  
+
+We have completed this playbook step using PowerShell functions and Netcat. 
  
 </details>
 
 <details>
  <summary>Use GUI WinSCP</summary>
 
+We should still be working from the PC10 virtual machine. 
+
+Select **Type here to search** from the taskbar, enter winscp, then select **WinSCP** from the results. 
+
 ![](./images/84.png)
+
+The WinSCP application should be displayed.
+
 ![](./images/85.jpg)
+
+On the Login window, select the File protocol: pull-down list, then select **SCP**. 
+
 ![](./images/86.png)
+
+Type 10.1.16.66 in the Host name: field. 
+
+Leave the Port number: field set at **22**. 
+
+Login as root  
+
+Select **Login** 
+
 ![](./images/87.png)
+
+Select **Yes** on the Warning window. 
+
 ![](./images/88.png)
+
+This warning message indicates that this is the first time a connection has been attempted to this destination. 
+
+Double-click the **quarantine** folder that is now present in the Name column. 
+
 ![](./images/89.jpg)
+
+In the left pane, relative to the PC10 system, select the **Parent directory** icon in the toolbar three times. This icon is a yellow file folder with an arrow pointing left then up. To the right of this icon are two periods. 
+
 ![](./images/90.png)
+
+The path statement in the left pane, just above the directory contents presentation, should read C:\. 
+
 ![](./images/91.jpg)
+
+Select **HeavyLoad.zip** in the left pane, then select **Upload** from the toolbar. 
+
 ![](./images/92.png)
+
+Select **OK** on the Upload window without making any changes. 
+
 ![](./images/93.png)
+
+This initiates the file transfer to Kali. After a few seconds, HeavyLoad.zip should be listed on the right-pane. 
+
+Close WinSCP. Select **Yes** to exit WinSCP without saving a workspace. 
+
 ![](./images/94.jpg)
+
+Select the **KALI VM** and sign in as **root**. 
+
+Open a Terminal window by selecting the **Terminal Emulator** from the Kali Linux toolbar 
+
+Enter **cd /root/quarantine** to change into the folder. 
+```bash
+cd /root/quarantine
+```
 ![](./images/95.png)
+
+Enter **ls -l** to view the long list of the current directory. 
+```bash
+ls -l
+```
 ![](./images/96.jpg)
+
+You should see the HeavyLoad.zip file is now present on the Kali system. 
+
+Enter **unzip -t HeavyLoad.zip** to test and verify the file transferred properly.
+```bash
+unzip -t HeavyLoad.zip
+```
 ![](./images/97.jpg)
- 
+
+The result should indicate "No errors detected in compressed data of HeavyLoad.zip." 
+
+Switch back to the PC10 virtual machine. and sign in as Jaime. 
+
+This VM switch back is needed to keep each playbook step transition consistent. 
+
+We have completed this playbook step using WinSCP. 
+
 </details>
 
 <details>
@@ -540,7 +1271,7 @@ Sysinternals, at sysinternals.com, is a Microsoft website that offers technical 
 <strong>Remove the suspicious file from the victim</strong>
 
 <details>
- <summary>Choose a method</summary>
+ <summary><strong>Choose a method</strong></summary>
 
 <details>
  <summary>Use CLI Command Prompt del command</summary>
