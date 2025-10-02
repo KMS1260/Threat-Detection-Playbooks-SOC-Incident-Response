@@ -111,62 +111,45 @@ The rogue process will immediately begin to consume most of the CPU. This will c
 
 Investigate High CPU usage 
 
----
+The first step of the High-CPU IR Playbook is: 
 
-## Playbook Step 2
+Investigate the high CPU usage and determine the rogue process's name. 
 
-Terminate the offending process 
+In this High-CPU IR Playbook step, we will determine which rogue process is consuming most of the CPU's resources. 
 
----
+Make a selection of the method to use to accomplish this initial task. The method options are: 
 
-## Playbook Step 3
+GUI - using the Windows Task Manager 
 
-Hash the suspicious file 
+CLI - using the CLI Command Prompt wmic utility 
 
----
+Third-party - using the Sysinternals GUI tool Process Manager 
 
-## Playbook Step 4
+You can review the offered methods using the pull-down list below before making a final selection to work through. 
 
-online malware scan
+Security Orchestration, Automation, and Response (SOAR) is a security solution whose purpose is to scan security and threat intelligence data collected from multiple sources within the enterprise and then analyze it using various techniques. A SOAR can also assist with provisioning tasks, such as creating and deleting user accounts, making shares available, or launching VMs from templates. The SOAR will use technologies such as cloud and SDN/SDV APIs, orchestration tools, and cyber threat intelligence (CTI) feeds to integrate the different systems it manages. It will also leverage technologies such as automated malware signature creation and user and entity behavior analytics (UEBA) to detect and identify threats. The automated actions performed by a SOAR are to be documented in runbooks. However, when the SOAR fails to operate properly, security personnel can use a playbook to perform manually the actions that the SOAR would have automated. 
 
----
+<details>
+<summary>Choose a method</summary>
 
-## Playbook Step 5
-
-Determine the owner of the suspicious file
-
----
-
-## Playbook Step 6
-
-Archive the Suspicious File 
-
----
-
-## Playbook Step 7
-
-Copy the archive to a quarantine system 
-
----
-
-## Playbook Step 8
-
-Remove the suspicious file from the victim 
-
----
-
-## Playbook Step 9
-
-Craft a Report about the Response
-
----
-
-
-
+<details>
+ <summary>GUI</summary>
 
 ![](./images/3.png)
+ 
+ </details>
+
+<details>
+ <summary>CLI</summary>
+
 ![](./images/4.jpg)
 ![](./images/5.png)
+ 
+ </details>
+
+<details>
+ <summary>Third-party </summary>
+
 ![](./images/6.png)
 ![](./images/7.png)
 ![](./images/8.png)
@@ -175,6 +158,83 @@ Craft a Report about the Response
 ![](./images/11.jpg)
 ![](./images/12.jpg)
 ![](./images/13.jpg)
+ 
+ </details>
+
+</details>
+
+---
+
+## Playbook Step 2
+
+Terminate the offending process 
+
+
+
+---
+
+## Playbook Step 3
+
+Hash the suspicious file 
+
+
+
+---
+
+## Playbook Step 4
+
+online malware scan
+
+
+
+---
+
+## Playbook Step 5
+
+Determine the owner of the suspicious file
+
+
+
+---
+
+## Playbook Step 6
+
+Archive the Suspicious File 
+
+
+
+---
+
+## Playbook Step 7
+
+Copy the archive to a quarantine system 
+
+
+
+---
+
+## Playbook Step 8
+
+Remove the suspicious file from the victim 
+
+
+
+---
+
+## Playbook Step 9
+
+Craft a Report about the Response
+
+
+
+---
+
+
+
+
+
+
+
 ![](./images/14.jpg)
 ![](./images/15.jpg)
 ![](./images/16.png)
@@ -292,8 +352,6 @@ Craft a Report about the Response
 ![](./images/128.jpg)
 ![](./images/129.jpg)
 ![](./images/130.jpg)
-
-
 
 
 ## Key Takeaways
