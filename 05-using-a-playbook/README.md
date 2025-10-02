@@ -35,7 +35,7 @@ we will be working from a virtual machine named PC10, hosting Windows Server 201
 7. [Playbook Step 7](#playbook-step-7) - <strong>Copy the archive to a quarantine system</strong>
 8. [Playbook Step 8](#playbook-step-8) - <strong>Remove the suspicious file from the victim</strong>
 9. [Playbook Step 9](#playbook-step-9) - <strong>Craft a Report about the Response</strong>
-10. [Report](./Incident-Response-Report.md)
+10. [Report](https://github.com/KMS1260/Threat-Detection-Playbooks-SOC-Incident-Response/blob/projects/05-using-a-playbook/Incident-Response-Report.md)
 
 
 ---
