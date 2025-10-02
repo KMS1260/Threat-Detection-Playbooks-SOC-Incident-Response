@@ -1587,7 +1587,7 @@ This type of report is often known as an AAR (After Action Report). It can also 
 
 Once the report is crafted, it should be submitted to your CISO for review.
 
-[Report](.Incident-Response-Report.md)
+[Report](./Incident-Response-Report.md)
 
 ---
 
