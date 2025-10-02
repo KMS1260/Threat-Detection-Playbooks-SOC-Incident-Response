@@ -133,14 +133,14 @@ Security Orchestration, Automation, and Response (SOAR) is a security solution w
 <summary>Choose a method</summary>
 
 <details>
- <summary>GUI</summary>
+ <summary>Use GUI Task Manager</summary>
 
 ![](./images/3.png)
  
  </details>
 
 <details>
- <summary>CLI</summary>
+ <summary>Use CLI Command Prompt WMIC utility</summary>
 
 ![](./images/4.jpg)
 ![](./images/5.png)
@@ -148,7 +148,7 @@ Security Orchestration, Automation, and Response (SOAR) is a security solution w
  </details>
 
 <details>
- <summary>Third-party</summary>
+ <summary>Use third-party GUI Process Manager</summary>
 
 ![](./images/6.png)
 ![](./images/7.png)
@@ -163,7 +163,9 @@ Security Orchestration, Automation, and Response (SOAR) is a security solution w
 
 </details>
 
+
 ---
+
 
 ## Playbook Step 2
 
@@ -173,26 +175,32 @@ Terminate the offending process
  <summary>Choose a method</summary>
 
 <details>
- <summary>GUI</summary>
+ <summary>Use GUI Task Manager</summary>
+ 
 </details>
 
 <details>
- <summary>CLI-CP</summary>
+ <summary>Use CLI Command Prompt tool taskkill</summary>
+ 
 </details>
 
 <details>
- <summary>CLI-PS</summary>
+ <summary>Use CLI PowerShell cmdlet Stop-Process</summary>
+ 
 </details>
 
 <details>
- <summary>Third-party-CLI</summary>
+ <summary>Use third-party CLI pskill utility</summary>
+ 
 </details>
 
 <details>
- <summary>Third-party-GUI</summary>
+ <summary>Use third-party GUI Process Explorer</summary>
+ 
 </details>
  
  </details>
+
 ---
 
 ## Playbook Step 3
@@ -200,8 +208,22 @@ Terminate the offending process
 Hash the suspicious file 
 
 <details>
- <summary></summary>
+ <summary>Choose a method</summary>
+
+<details>
+ <summary>Use CLI Command Prompt tool certutil</summary>
 </details>
+
+<details>
+ <summary>Use CLI PowerShell cmdlet Get-FileHash</summary>
+</details>
+
+<details>
+ <summary>Use third-party CLI tool sigcheck</summary>
+</details>
+
+</details>
+
 ---
 
 ## Playbook Step 4
@@ -209,9 +231,21 @@ Hash the suspicious file
 online malware scan
 
 <details>
- <summary></summary>
+ <summary>Choose a method</summary>
+
+<details>
+ <summary>Use Hybrid Analysis</summary>
 </details>
 
+<details>
+ <summary>Use MetaDefender</summary>
+</details>
+
+<details>
+ <summary>Use VirusTotal</summary>
+</details>
+ 
+</details>
 
 ---
 
@@ -220,8 +254,23 @@ online malware scan
 Determine the owner of the suspicious file
 
 <details>
- <summary></summary>
+ <summary>Choose a method</summary>
+
+<details>
+ <summary>Use GUI File Explorer</summary>
 </details>
+
+<details>
+ <summary>Use CLI Command Prompt dir command</summary>
+</details>
+
+<details>
+ <summary>Use CLI PowerShell cmdlet Get-Acl</summary>
+</details>
+ 
+</details>
+
+
 
 ---
 
@@ -230,7 +279,20 @@ Determine the owner of the suspicious file
 Archive the Suspicious File 
 
 <details>
- <summary></summary>
+ <summary>Choose a method</summary>
+
+<details>
+ <summary>Use GUI File Explorer</summary>
+</details>
+
+<details>
+ <summary>Use CLI Command Prompt tool tar</summary>
+</details>
+
+<details>
+ <summary>Use CLI PowerShell cmdlet Compress-Archive</summary>
+</details>
+ 
 </details>
 
 ---
@@ -240,7 +302,20 @@ Archive the Suspicious File
 Copy the archive to a quarantine system 
 
 <details>
- <summary></summary>
+ <summary>Choose a method</summary>
+
+<details>
+ <summary>Use Netcat and PowerShell</summary>
+</details>
+
+<details>
+ <summary>Use GUI WinSCP</summary>
+</details>
+
+<details>
+ <summary>Use SAMBA</summary>
+</details>
+ 
 </details>
 
 ---
@@ -250,7 +325,20 @@ Copy the archive to a quarantine system
 Remove the suspicious file from the victim 
 
 <details>
- <summary></summary>
+ <summary>Choose a method</summary>
+
+<details>
+ <summary>Use CLI Command Prompt del command</summary>
+</details>
+
+<details>
+ <summary>Use third-party CLI SDelete utility</summary>
+</details>
+
+<details>
+ <summary>Use GUI w/ Recycle Bin</summary>
+</details>
+ 
 </details>
 
 ---
