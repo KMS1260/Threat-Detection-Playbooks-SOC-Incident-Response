@@ -73,7 +73,7 @@ The blog is designed so you can choose your own options for each step of the ove
 
 A playbook is a common example of responsive controls. These are controls that serve to direct corrective actions that need to be enacted after an incident has been confirmed. In a Security Operations Center (SOC), responsive controls might include several very well-defined actions to be taken by a security professional after identifying a specific issue.
 
-Setup
+## Setup
 
 In this introductory exercise, we will log into PC10 and initiate the rogue process. 
 
