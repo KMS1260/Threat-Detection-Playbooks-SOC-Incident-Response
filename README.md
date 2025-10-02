@@ -16,7 +16,7 @@ Each project includes:
 | #  | Project Title                         | Domain / Techniques Covered                                                | Link |
 |----|---------------------------------------|----------------------------------------------------------------------------|------|
 | 01 | Configuring System Monitoring         | Windows Event Forwarding, WinRM, Event Collector, GPO                     | [Open](./01-configuring-system-monitoring/README.md) |
-| 02 | Detecting and Responding to Malware   | Sandbox Triage, Multi‑engine Reputation, ATT&CK Mapping                    | [Open](./02-detecting-and-responding-to-malware/README.md) |
+| 02 | Detecting and Responding to Malware   | Sandbox Triage, Multi‑engine Reputation, ATT&CK Mapping                   | [Open](./02-detecting-and-responding-to-malware/README.md) |
 | 03 | Incident Response & Detection         | SIEM Detections, Auth Abuse, Rule IDs, Baselines vs Signals               | [Open](./03-incident-response-and-detection/README.md) |
 | 04 | Performing Root Cause Analysis        | Timeline Analysis, Event Correlation, Windows Event IDs, Audit Policy     | [Open](./04-performing-root-cause-analysis/README.md) |
 | 05 | Using a Playbook                      | High‑CPU Incident Playbook, Process Containment, Binary Triage, Quarantine| [Open](./05-using-a-playbook/README.md) |
