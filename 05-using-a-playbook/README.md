@@ -26,14 +26,14 @@ we will be working from a virtual machine named PC10, hosting Windows Server 201
 
 [Setup](#setup)
 1. [Playbook Step 1](#playbook-step-1) - <strong>Investigate High CPU usage</strong>
-2. [Playbook Step 2](#playbook-step-2) - Terminate the offending process
-3. [Playbook Step 3](#playbook-step-3) - Hash the suspicious file
-4. [Playbook Step 4](#playbook-step-4) - online malware scan
-5. [Playbook Step 5](#playbook-step-5) - Determine the owner of the suspicious file
-6. [Playbook Step 6](#playbook-step-6) - Archive the Suspicious File
-7. [Playbook Step 7](#playbook-step-7) - Copy the archive to a quarantine system
-8. [Playbook Step 8](#playbook-step-8) - Remove the suspicious file from the victim
-9. [Playbook Step 9](#playbook-step-9) - Craft a Report about the Response
+2. [Playbook Step 2](#playbook-step-2) - <strong>Terminate the offending process</strong>
+3. [Playbook Step 3](#playbook-step-3) - <strong>Hash the suspicious file</strong>
+4. [Playbook Step 4](#playbook-step-4) - <strong>online malware scan</strong>
+5. [Playbook Step 5](#playbook-step-5) - <strong>Determine the owner of the suspicious file</strong>
+6. [Playbook Step 6](#playbook-step-6) - <strong>Archive the Suspicious File</strong>
+7. [Playbook Step 7](#playbook-step-7) - <strong>Copy the archive to a quarantine system</strong>
+8. [Playbook Step 8](#playbook-step-8) - <strong>Remove the suspicious file from the victim</strong>
+9. [Playbook Step 9](#playbook-step-9) - <strong>Craft a Report about the Response</strong>
 
 ---
 
