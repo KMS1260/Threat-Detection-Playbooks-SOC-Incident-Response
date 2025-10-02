@@ -109,9 +109,9 @@ The rogue process will immediately begin to consume most of the CPU. This will c
 
 ## Playbook Step 1
 
-Investigate High CPU usage 
+<strong>Investigate High CPU usage</strong>
 
-The first step of the High-CPU IR Playbook is: 
+The first step of the High-CPU IR Playbook is:
 
 Investigate the high CPU usage and determine the rogue process's name. 
 
@@ -135,29 +135,105 @@ Security Orchestration, Automation, and Response (SOAR) is a security solution w
 <details>
  <summary>Use GUI Task Manager</summary>
 
+Select **Type here to search** from the taskbar, type task, then select **Task Manager** from the results. 
+
+The Task Manager window should be displayed in details view with a menu bar and several tabs.
+
 ![](./images/3.png)
- 
+
+If the Task Manager is not in the details view, select **More Details** to switch to the details view. 
+
+Select the **CPU** column to sort the processes by their CPU consumption. 
+
+If the CPU percentages at the top of the column are 0%, then select the **CPU** column header again to reverse the sort order. 
+
+Determine the name of the process that is consuming most of the CPU. We will note down the name 
+
+High CPU process name: HeavyLoad 
+
+Leave the Task Manager open. We will use it in a later playbook step. 
+
+We have completed this playbook step using the GUI Task Manager. 
+
  </details>
 
 <details>
  <summary>Use CLI Command Prompt WMIC utility</summary>
+ 
+Select **Type here to search** from the taskbar, enter cmd, right-click **Command Prompt** from the results, then select **Run as administrator**. 
 
+Select **Yes** on the User Account Control window. 
+
+Enter: 
+```cmd
+wmic path Win32_PerfFormattedData_PerfProc_Process get Name,PercentProcessorTime. 
+```
 ![](./images/4.jpg)
+
+The results will be presented in an unsorted list. Scroll back up to locate the process name with the highest PercentProcessorTime.
+
 ![](./images/5.png)
+
+The processor time is based on this system's use of 2 (virtual) CPUs. So, the total CPU process time available is 200%. 
+
+As usual we would note down the name of the process: HeavyLoad  
+
+Leave the Command Prompt window open. 
+
+We have completed this playbook step using the CLI Command Prompt wmic utility. 
  
  </details>
 
 <details>
  <summary>Use third-party GUI Process Manager</summary>
 
+Select **Type here to search** from the taskbar, type file, then select **File Explorer** from the results. 
+
 ![](./images/6.png)
+
+The File Explorer window should be displayed. 
+
 ![](./images/7.png)
+
+In the left pane, select **SYSINTERNALS**. 
+
 ![](./images/8.png)
+
+The contents of the C:\SYSINTERNALS folder will be displayed in the right pane. 
+
+In the search field at the top right of the File Explorer window, which currently displays Search SYSINTERNALS*, enter procexp. 
+
 ![](./images/9.jpg)
+
+There should be three results. 
+
+Double-click **procexp64** from the search results.
+
 ![](./images/10.jpg)
+
+The Process Explorer utility from Sysinternals should be displayed. 
+
 ![](./images/11.jpg)
+
+Select the **CPU** column heading to sort by the use percentage. 
+
 ![](./images/12.jpg)
+
+Scroll to the top of the listed processes to determine the process name consuming a significant amount of CPU resources. 
+
 ![](./images/13.jpg)
+
+If the top of the CPU column is empty or shows use of "<0.01", then select the CPU column header again to reverse the sort order. 
+
+High CPU process name: HeavyLoad 
+
+Leave Process Explorer open. You may use it in a later playbook step. 
+
+Leave File Explorer open. 
+
+We have completed this playbook step using the third-party GUI utility Process Explorer from Microsoft's Sysinternals. 
+
+Sysinternals, at sysinternals.com, is a Microsoft website that offers technical resources and utilities to manage, diagnose, troubleshoot, and monitor a Microsoft Windows environment. You can experiment with the Sysinternals tools go directly to sysinternals.com to learn more and download the suite of nearly 75 tools onto your own system. 
  
  </details>
 
@@ -169,7 +245,7 @@ Security Orchestration, Automation, and Response (SOAR) is a security solution w
 
 ## Playbook Step 2
 
-Terminate the offending process 
+<strong>Terminate the offending process</strong>
 
 <details>
  <summary>Choose a method</summary>
@@ -177,25 +253,49 @@ Terminate the offending process
 <details>
  <summary>Use GUI Task Manager</summary>
  
+![](./images/14.jpg)
+![](./images/15.jpg)
+
 </details>
 
 <details>
  <summary>Use CLI Command Prompt tool taskkill</summary>
+
+![](./images/16.png)
+![](./images/17.jpg)
+![](./images/18.jpg)
+![](./images/19.png)
  
 </details>
 
 <details>
  <summary>Use CLI PowerShell cmdlet Stop-Process</summary>
+
+![](./images/20.png)
+![](./images/21.png)
+![](./images/22.jpg)
+![](./images/23.png)
+![](./images/24.jpg)
  
 </details>
 
 <details>
  <summary>Use third-party CLI pskill utility</summary>
+
+![](./images/25.png)
+![](./images/26.png)
+![](./images/27.jpg)
+![](./images/28.png)
+![](./images/29.png)
  
 </details>
 
 <details>
  <summary>Use third-party GUI Process Explorer</summary>
+
+![](./images/30.jpg)
+![](./images/31.png)
+![](./images/32.jpg)
  
 </details>
  
@@ -205,21 +305,41 @@ Terminate the offending process
 
 ## Playbook Step 3
 
-Hash the suspicious file 
+<strong>Hash the suspicious file</strong>
 
 <details>
  <summary>Choose a method</summary>
 
 <details>
  <summary>Use CLI Command Prompt tool certutil</summary>
+
+![](./images/33.jpg)
+![](./images/34.png)
+![](./images/35.png)
+![](./images/36.jpg)
+![](./images/37.png)
+ 
 </details>
 
 <details>
  <summary>Use CLI PowerShell cmdlet Get-FileHash</summary>
+
+![](./images/38.jpg)
+![](./images/39.png)
+![](./images/40.png)
+![](./images/41.png)
+![](./images/42.jpg)
+ 
 </details>
 
 <details>
  <summary>Use third-party CLI tool sigcheck</summary>
+
+![](./images/43.png)
+![](./images/44.png)
+![](./images/45.png)
+![](./images/46.png)
+ 
 </details>
 
 </details>
@@ -228,21 +348,40 @@ Hash the suspicious file
 
 ## Playbook Step 4
 
-online malware scan
+<strong>online malware scan</strong>
 
 <details>
  <summary>Choose a method</summary>
 
 <details>
  <summary>Use Hybrid Analysis</summary>
+
+
+![](./images/47.jpg)
+![](./images/48.png)
+![](./images/49.jpg)
+![](./images/50.png)
+![](./images/51.jpg)
+ 
 </details>
 
 <details>
  <summary>Use MetaDefender</summary>
+
+![](./images/52.png)
+![](./images/53.jpg)
+![](./images/54.jpg)
+ 
 </details>
 
 <details>
  <summary>Use VirusTotal</summary>
+
+![](./images/55.png)
+![](./images/56.png)
+![](./images/57.png)
+![](./images/58.png)
+ 
 </details>
  
 </details>
@@ -251,21 +390,33 @@ online malware scan
 
 ## Playbook Step 5
 
-Determine the owner of the suspicious file
+<strong>Determine the owner of the suspicious file</strong>
 
 <details>
  <summary>Choose a method</summary>
 
 <details>
  <summary>Use GUI File Explorer</summary>
+
+![](./images/59.jpg)
+![](./images/60.png)
+![](./images/61.png)
+![](./images/62.jpg)
+ 
 </details>
 
 <details>
  <summary>Use CLI Command Prompt dir command</summary>
+
+![](./images/63.jpg)
+ 
 </details>
 
 <details>
  <summary>Use CLI PowerShell cmdlet Get-Acl</summary>
+
+![](./images/64.png)
+ 
 </details>
  
 </details>
@@ -276,21 +427,37 @@ Determine the owner of the suspicious file
 
 ## Playbook Step 6
 
-Archive the Suspicious File 
+<strong>Archive the Suspicious File</strong>
 
 <details>
  <summary>Choose a method</summary>
 
 <details>
  <summary>Use GUI File Explorer</summary>
+
+![](./images/65.jpg)
+![](./images/66.png)
+![](./images/67.jpg)
+![](./images/68.jpg)
+![](./images/69.jpg)
+![](./images/70.png)
+![](./images/71.png)
+ 
 </details>
 
 <details>
  <summary>Use CLI Command Prompt tool tar</summary>
+
+![](./images/72.jpg)
+![](./images/73.jpg)
+ 
 </details>
 
 <details>
  <summary>Use CLI PowerShell cmdlet Compress-Archive</summary>
+
+![](./images/74.jpg)
+ 
 </details>
  
 </details>
@@ -299,125 +466,14 @@ Archive the Suspicious File
 
 ## Playbook Step 7
 
-Copy the archive to a quarantine system 
+<strong>Copy the archive to a quarantine system</strong>
 
 <details>
  <summary>Choose a method</summary>
 
 <details>
  <summary>Use Netcat and PowerShell</summary>
-</details>
 
-<details>
- <summary>Use GUI WinSCP</summary>
-</details>
-
-<details>
- <summary>Use SAMBA</summary>
-</details>
- 
-</details>
-
----
-
-## Playbook Step 8
-
-Remove the suspicious file from the victim 
-
-<details>
- <summary>Choose a method</summary>
-
-<details>
- <summary>Use CLI Command Prompt del command</summary>
-</details>
-
-<details>
- <summary>Use third-party CLI SDelete utility</summary>
-</details>
-
-<details>
- <summary>Use GUI w/ Recycle Bin</summary>
-</details>
- 
-</details>
-
----
-
-## Playbook Step 9
-
-Craft a Report about the Response
-
-
-
----
-
-
-
-
-
-
-
-![](./images/14.jpg)
-![](./images/15.jpg)
-![](./images/16.png)
-![](./images/17.jpg)
-![](./images/18.jpg)
-![](./images/19.png)
-![](./images/20.png)
-![](./images/21.png)
-![](./images/22.jpg)
-![](./images/23.png)
-![](./images/24.jpg)
-![](./images/25.png)
-![](./images/26.png)
-![](./images/27.jpg)
-![](./images/28.png)
-![](./images/29.png)
-![](./images/30.jpg)
-![](./images/31.png)
-![](./images/32.jpg)
-![](./images/33.jpg)
-![](./images/34.png)
-![](./images/35.png)
-![](./images/36.jpg)
-![](./images/37.png)
-![](./images/38.jpg)
-![](./images/39.png)
-![](./images/40.png)
-![](./images/41.png)
-![](./images/42.jpg)
-![](./images/43.png)
-![](./images/44.png)
-![](./images/45.png)
-![](./images/46.png)
-![](./images/47.jpg)
-![](./images/48.png)
-![](./images/49.jpg)
-![](./images/50.png)
-![](./images/51.jpg)
-![](./images/52.png)
-![](./images/53.jpg)
-![](./images/54.jpg)
-![](./images/55.png)
-![](./images/56.png)
-![](./images/57.png)
-![](./images/58.png)
-![](./images/59.jpg)
-![](./images/60.png)
-![](./images/61.png)
-![](./images/62.jpg)
-![](./images/63.jpg)
-![](./images/64.png)
-![](./images/65.jpg)
-![](./images/66.png)
-![](./images/67.jpg)
-![](./images/68.jpg)
-![](./images/69.jpg)
-![](./images/70.png)
-![](./images/71.png)
-![](./images/72.jpg)
-![](./images/73.jpg)
-![](./images/74.jpg)
 ![](./images/75.png)
 ![](./images/76.png)
 ![](./images/77.png)
@@ -427,6 +483,12 @@ Craft a Report about the Response
 ![](./images/81.jpg)
 ![](./images/82.jpg)
 ![](./images/83.png)
+ 
+</details>
+
+<details>
+ <summary>Use GUI WinSCP</summary>
+
 ![](./images/84.png)
 ![](./images/85.jpg)
 ![](./images/86.png)
@@ -441,6 +503,12 @@ Craft a Report about the Response
 ![](./images/95.png)
 ![](./images/96.jpg)
 ![](./images/97.jpg)
+ 
+</details>
+
+<details>
+ <summary>Use SAMBA</summary>
+
 ![](./images/98.png)
 ![](./images/99.png)
 ![](./images/100.png)
@@ -460,13 +528,43 @@ Craft a Report about the Response
 ![](./images/114.png)
 ![](./images/115.png)
 ![](./images/116.png)
+ 
+</details>
+ 
+</details>
+
+---
+
+## Playbook Step 8
+
+<strong>Remove the suspicious file from the victim</strong>
+
+<details>
+ <summary>Choose a method</summary>
+
+<details>
+ <summary>Use CLI Command Prompt del command</summary>
+
 ![](./images/117.png)
 ![](./images/118.jpg)
 ![](./images/119.png)
 ![](./images/120.jpg)
+ 
+</details>
+
+<details>
+ <summary>Use third-party CLI SDelete utility</summary>
+
 ![](./images/121.png)
 ![](./images/122.jpg)
 ![](./images/123.png)
+![](./images/122.jpg)
+ 
+</details>
+
+<details>
+ <summary>Use GUI w/ Recycle Bin</summary>
+
 ![](./images/124.jpg)
 ![](./images/125.jpg)
 ![](./images/126.jpg)
@@ -474,6 +572,20 @@ Craft a Report about the Response
 ![](./images/128.jpg)
 ![](./images/129.jpg)
 ![](./images/130.jpg)
+ 
+</details>
+ 
+</details>
+
+---
+
+## Playbook Step 9
+
+<strong>Craft a Report about the Response</strong>
+
+
+
+---
 
 
 ## Key Takeaways
