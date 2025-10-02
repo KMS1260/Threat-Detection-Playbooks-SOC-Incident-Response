@@ -1240,27 +1240,155 @@ We have completed this playbook step using WinSCP.
 <details>
  <summary>Use SAMBA</summary>
 
+Select the KALI VM and sign in as **root**. 
+
+Open a Terminal window by selecting the **Terminal Emulator** from the Kali Linux toolbar 
+
+Enter **mkdir quarantine** to create a directory.
+```bash
+mkdir quarantine
+```
 ![](./images/98.png)
+
+Enter **cd quarantine** to change into the new folder. 
+```bash
+cd quarantine
+```
 ![](./images/99.png)
+
+Enter **nano /etc/samba/smb.conf** to open the SAMBA configuration file in the nano editor.
+```bash
+nano /etc/samba/smb.conf
+```
 ![](./images/100.png)
+
+In a real-world situation, it is recommended to make a backup copy of the smb.conf file before altering it. A command such as cp /etc/samba/smb.conf /etc/samba/smb.conf.bak would accomplish that. 
+
+Type **CLTR+/** on your keyboard to issue the Go To Line function, type **500**, then press **Enter** on your keyboard. 
+
 ![](./images/101.png)
+
+This will move your cursor to the end of the file, which is less than 500 lines long. 
+
+You should see the end of the smb.conf file, which is the final line of: 
+; write list = root, @lpadmin. 
+
 ![](./images/102.jpg)
+
+At the end of the smb.conf file, type in the following: 
+```bash
+[quarantine] 
+  path = /root/quarantine 
+  browsable = yes 
+  read only = no 
+  guest ok = no 
+  valid users = root 
+```
 ![](./images/103.jpg)
+
+Double-check your typing before saving these configuration changes. 
+
+Type **CTRL+X** on your keyboard to exit Nano. 
+
+Enter **y** to save the modified buffer. 
+
 ![](./images/104.png)
+
+Press **Enter** on your keyboard to accept the existing filename. 
+
 ![](./images/105.jpg)
+
+Enter **smbpasswd -a root**, then enter the password at both password prompts. 
+```bash
+smbpasswd -a root
+```
 ![](./images/106.jpg)
+
+The result of this operation should be the statement "Added user root".
+
 ![](./images/107.jpg)
+
+Enter **systemctl restart** smbd to restart the SAMBA service so the new configuration settings will be in effect.
+```bash
+systemctl restart smbd
+```
 ![](./images/108.jpg)
+
+Switch back to the PC10 virtual machine. If needed sign in as Jaime. 
+
+Return to the **Command Prompt** window, which may have been left open from a previous playbook activity. 
+
+If the Command Prompt window is not open, select **Type here to search** from the taskbar, enter cmd, right-click **Command Prompt** from the results, then select **Run as administrator**. Then, select **Yes** on the User Account Control window. 
+
+Enter:
+```cmd
+net use z: \\10.1.16.66\quarantine /user:root
+```
 ![](./images/109.png)
+
+If prompted, enter the password. 
+
+Enter cd C:\ to switch to the root directory. 
+```cmd
+cd C:\
+```
 ![](./images/110.png)
+
+Enter copy HeavyLoad.zip z:\HeavyLoad.zip. 
+```cmd
+copy HeavyLoad.zip z:\HeavyLoad.zip
+```
 ![](./images/111.png)
+
+This command copies the suspicious file archive to the quarantine system. The result should be "1 file(s) copied.". 
+
 ![](./images/112.png)
+
+Ignore the overwrite it’s because this task has been done via two methods  
+
+Enter net use z: /delete to remove the network drive mapping. 
+```cmd
+net use z: /delete
+```
 ![](./images/113.png)
+
+Select the KALI VM and sign in as **root**. 
+
+Open a Terminal window by selecting the **Terminal Emulator** from the Kali Linux toolbar 
+
+Enter** cd /root/quarantine** to change into the folder. 
+```bash
+cd /root/quarantine
+```
 ![](./images/114.png)
+
+You may already be in the /root/quarantine folder. 
+
+Enter **ls -l** to view the long list of the current directory. 
+```bash
+ls -l
+```
 ![](./images/115.png)
+
+You should see the HeavyLoad.zip file is now present on the Kali system. 
+
+Enter **unzip -t HeavyLoad.zip** to test and verify the file transferred properly. 
+```bash
+unzip -t HeavyLoad.zip
+```
 ![](./images/116.png)
+
+The result should indicate "No errors detected in compressed data of HeavyLoad.zip." 
+
+Switch back to the PC10 virtual machine. If needed, sign in as Jaime. 
+
+This VM switch back is needed to keep each playbook step transition consistent. 
+
+Leave the Command Prompt window open.  
+
+We have completed this playbook step using SAMBA. 
  
-</details>
+ </details>
  
 </details>
 
@@ -1270,39 +1398,157 @@ We have completed this playbook step using WinSCP.
 
 <strong>Remove the suspicious file from the victim</strong>
 
+The next step of the High-CPU IR Playbook is: 
+
+Remove the suspicious file from the affected system(s). 
+
+In this High-CPU IR Playbook step, we will remove the suspicious file and related files from the victim system. 
+
+Make a selection of the method to use to accomplish this task. The method options are: 
+
+- CLI-CP1 - using CLI Command Prompt del command 
+- CLI-CP2 - using the Sysinternals CLI tool SDelete 
+- GUI - using File Explorer and the Recycle Bin 
+
+You can review the offered methods using the pull-down list below before making a final selection to work through. 
+
 <details>
  <summary><strong>Choose a method</strong></summary>
 
 <details>
  <summary>Use CLI Command Prompt del command</summary>
 
+Return to the **Command Prompt** window, which may have been left open from a previous playbook activity. 
+
+If the Command Prompt window is not open, select T**ype here to search** from the taskbar, enter cmd, right-click **Command Prompt** from the results, then select **Run as administrator**. Then, select **Yes** on the User Account Control window. 
+
+Enter del c:\HeavyLoad.zip to delete the suspicious file archive. 
+```cmd
+del c:\HeavyLoad.zip
+```
 ![](./images/117.png)
+
+Enter dir to confirm the file was removed from the current directory.
+```cmd
+dir
+```
 ![](./images/118.jpg)
+
+Enter del c:\Users\HeavyLoad* to delete the suspicious file and the hash file. 
+```cmd
+del c:\Users\HeavyLoad*
+```
 ![](./images/119.png)
+
+Enter dir c:\Users to confirm the files were removed from the c:\Users directory.
+```cmd
+dir c:\Users
+```
 ![](./images/120.jpg)
+
+Using the native del command will delete the files, but it is not secure destruction of the files' contents. An undelete operation (using a third-party tool) can recover access to deleted files whose storage areas are not yet overwritten. Also, the CLI del command deletes files directly rather than sending them to the Recycle Bin. 
+
+Close the Command Prompt window. 
+
+We have completed this playbook step using the CLI Command Prompt del command. 
  
 </details>
 
 <details>
  <summary>Use third-party CLI SDelete utility</summary>
 
+Return to the **Command Prompt** window, which may have been left open from a previous playbook activity. 
+
+If the Command Prompt window is not open, select **Type here to search** from the taskbar, enter cmd, right-click **Command Prompt** from the results, then select **Run as administrator**. Then, select **Yes** on the User Account Control window. 
+
+Enter:
+```cmd
+sdelete -p 3 HeavyLoad.exe 
+```
 ![](./images/121.png)
+
+This command performs a secure deletion of HeavyLoad.exe by overwriting the drive storage areas where the file was located with random data (3 times based on this command) and does the same to the directory entry. 
+ 
+Enter dir to confirm the file was removed from the current directory.
+```cmd
+dir
+```
 ![](./images/122.jpg)
+
+Enter sdelete -p 3 c:\Users\HeavyLoad* to securely delete the suspicious file and the hash file. 
+```cmd
+sdelete -p 3 c:\Users\HeavyLoad*
+```
 ![](./images/123.png)
+
+Enter dir c:\Users to confirm the files were removed from the c:\Users directory. 
+```cmd
+dir c:\Users
+```
 ![](./images/122.jpg)
+
+Close the Command Prompt window. 
+
+We have completed this playbook step using the third-party CLI utility sdelete from Microsoft's Sysinternals. 
  
 </details>
 
 <details>
  <summary>Use GUI w/ Recycle Bin</summary>
 
+Return to **File Explorer**, which may have been left open from a previous playbook activity. 
+
+Select **Type here to search** from the taskbar, type file, then select **File Explorer** from the results. 
+
+The File Explorer window should be displayed. 
+
+In the left pane, select **Local Disk (C:)**. 
+
 ![](./images/124.jpg)
+
+The contents of the root of drive C: should be displayed in the right pane. 
+
+Right-click **HeavyLoad**, then select **Delete** from the fly-open menu. 
+
 ![](./images/125.jpg)
+
+Remember, File Explorer does not display the file extensions for known file types by default. Therefore, instead of seeing HeavyLoad.exe, you only see HeavyLoad. 
+
+The HeavyLoad archive file should no longer be visible. 
+
+Double-click **Users** to enter that directory. 
+
+Right-click **HeavyLoad**, then select **Delete** from the fly-open menu.
+
 ![](./images/126.jpg)
+
+The HeavyLoad executable file should no longer be visible. 
+
+Right-click **HeavyLoad-Hash**, then select **Delete** from the fly-open menu. 
+
 ![](./images/127.png)
+
+The HeavyLoad-Hash text file should no longer be visible. 
+
+Close File Explorer. 
+
+Left-click **Recycle bin** on the Desktop. 
+
+Then select **Empty Recycle** Bin from the fly-open menu. 
+
 ![](./images/128.jpg)
+
+Select **Yes** on the Delete Multiple Items query window. 
+
 ![](./images/129.jpg)
+
+Notice the files are no longer displayed in the Recycle Bin directory. The files have been effectively deleted. 
+
 ![](./images/130.jpg)
+
+Using File Explorer to delete files will send them to the Recycle Bin. From the Recycle Bin, they can be restored. Once the Recycle Bin is emptied, the files will be deleted, but it is not a secure destruction of the files' contents. An undelete operation (using a third-party tool) can recover access to deleted files whose storage areas are not yet overwritten. 
+
+We have completed this playbook step using File Explorer and the Recycle Bin. 
  
 </details>
  
@@ -1313,6 +1559,33 @@ We have completed this playbook step using WinSCP.
 ## Playbook Step 9
 
 <strong>Craft a Report about the Response</strong>
+
+The next step of the High-CPU IR Playbook is: 
+
+Fill out an incident report and submit it to the SOC for review. 
+
+In this High-CPU IR Playbook step, we will be reviewing instructions about crafting a report of the operations taken to resolve this security incident. 
+
+Now that you have completed the playbook's primary steps, you need to craft and file a report about the security incident response. Your report should include a summary of the High-CPU IR Playbook steps, along with the methods used and results obtained. 
+
+<details>
+ <summary><strong>The High-CPU IR Playbook steps are:</strong></summary>
+ 
+- Investigate the high CPU usage and determine the rogue process's name. 
+- Terminate the offending process. 
+- Hash the file associated with the rogue process. 
+- Perform an online malware analysis using the hash value of the suspicious file. 
+- Determine the owner of the suspicious file. 
+- Archive the suspicious file into a zip container along with a file and its hash value. 
+- Copy the zip archive of the suspicious file to a quarantine system. 
+- Remove the suspicious file from the affected system(s). 
+- Fill out an incident report and submit it to the SOC for review.
+  
+</details>
+
+This type of report is often known as an AAR (After Action Report). It can also be referred to as a Lessons Learned or Post-Mortem report. The goal or purpose of this report is to document the activities performed, note any discrepancies or problems encountered, and glean information about where the process, playbook, toolset, or environment may need to be changed or improved. 
+
+Once the report is crafted, it should be submitted to your CISO for review.
 
 
 
