@@ -148,7 +148,7 @@ Security Orchestration, Automation, and Response (SOAR) is a security solution w
  </details>
 
 <details>
- <summary>Third-party </summary>
+ <summary>Third-party</summary>
 
 ![](./images/6.png)
 ![](./images/7.png)
@@ -169,22 +169,48 @@ Security Orchestration, Automation, and Response (SOAR) is a security solution w
 
 Terminate the offending process 
 
+<details>
+ <summary>Choose a method</summary>
 
+<details>
+ <summary>GUI</summary>
+</details>
 
+<details>
+ <summary>CLI-CP</summary>
+</details>
+
+<details>
+ <summary>CLI-PS</summary>
+</details>
+
+<details>
+ <summary>Third-party-CLI</summary>
+</details>
+
+<details>
+ <summary>Third-party-GUI</summary>
+</details>
+ 
+ </details>
 ---
 
 ## Playbook Step 3
 
 Hash the suspicious file 
 
-
-
+<details>
+ <summary></summary>
+</details>
 ---
 
 ## Playbook Step 4
 
 online malware scan
 
+<details>
+ <summary></summary>
+</details>
 
 
 ---
@@ -193,7 +219,9 @@ online malware scan
 
 Determine the owner of the suspicious file
 
-
+<details>
+ <summary></summary>
+</details>
 
 ---
 
@@ -201,7 +229,9 @@ Determine the owner of the suspicious file
 
 Archive the Suspicious File 
 
-
+<details>
+ <summary></summary>
+</details>
 
 ---
 
@@ -209,7 +239,9 @@ Archive the Suspicious File
 
 Copy the archive to a quarantine system 
 
-
+<details>
+ <summary></summary>
+</details>
 
 ---
 
@@ -217,7 +249,9 @@ Copy the archive to a quarantine system
 
 Remove the suspicious file from the victim 
 
-
+<details>
+ <summary></summary>
+</details>
 
 ---
 
