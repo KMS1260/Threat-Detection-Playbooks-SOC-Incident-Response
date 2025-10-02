@@ -25,9 +25,9 @@ we will be working from a virtual machine named PC10, hosting Windows Server 201
 ## Table of Contents
 
 [Setup](#setup)
-1. [Playbook Step 1](#playbook-step-1)
-2. [Playbook Step 2](#playbook-step-2)
-3. [Playbook Step 3](#playbook-step-3)
+1. [Playbook Step 1](#playbook-step-1) - Investigate High CPU usage 
+2. [Playbook Step 2](#playbook-step-2) -
+3. [Playbook Step 3](#playbook-step-3) -
 4. [Playbook Step 4](#playbook-step-4)
 5. [Playbook Step 5](#playbook-step-5)
 6. [Playbook Step 6](#playbook-step-6)
