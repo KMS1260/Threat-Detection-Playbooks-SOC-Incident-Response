@@ -14,8 +14,8 @@ As a security team member, you are working to improve your organization's securi
 
 ## Table of Contents
 
-[Understanding IoC and threat intelligence sources](#Understanding-IoC-and-threat-intelligence-sources)
-[Explore The Exploit Database](#Explore-The-Exploit-Database)
+- [Understanding IoC and threat intelligence sources](#Understanding-IoC-and-threat-intelligence-sources)
+- [Explore The Exploit Database](#Explore-The-Exploit-Database)
 
 ---
 
