@@ -45,7 +45,7 @@ we will be working from a virtual machine named PC10, hosting Windows Server 201
 
 <strong>SIEM, SOAR, and playbooks</strong>
  
-The organization's SEIM solution has detected a significant increase in CPU consumption on the PC10 workstation. The level of CPU activity has been at or near 100%, which is abnormal for the PC10 system. Under normal circumstances, the SOAR solution would respond to and resolve the abnormal event automatically. However, the SOAR system is currently offline due to a recent reconfiguration and update failure. Therefore, as a security professional, we will be responding manually to this situation. 
+The organization's SIEM solution has detected a significant increase in CPU consumption on the PC10 workstation. The level of CPU activity has been at or near 100%, which is abnormal for the PC10 system. Under normal circumstances, the SOAR solution would respond to and resolve the abnormal event automatically. However, the SOAR system is currently offline due to a recent reconfiguration and update failure. Therefore, as a security professional, we will be responding manually to this situation. 
 
 Fortunately, a pre-crafted playbook will us through the manual response activities. An incident response (IR) consulting group wrote the organization's library of playbooks. The IR consulting group was given broad parameters for crafting the playbooks. This has resulted in playbooks with flexibility and support for a wide range of knowledge, skill, and experience levels for those needing to use them to respond to incidents. We will work through the playbook explicitly designed to deal with high CPU consumption by rogue processes. 
 
@@ -664,6 +664,20 @@ Leave the Command Prompt window open.
 ## Playbook Step 4
 
 <strong>online malware scan</strong>
+
+The next step of the High-CPU IR Playbook is: 
+
+Perform an online malware analysis using the hash value of the suspicious file. 
+
+In this High-CPU IR Playbook step, you will perform a malware evaluation of the hash of the suspicious file using an online malware scanning service. 
+
+Make a selection of the method to use to accomplish this task. The method options are: 
+
+- Hybrid Analysis 
+- MetaDefender 
+- VirusTotal 
+
+You can review the offered methods using the pull-down list below before making a final selection to work through. 
 
 <details>
  <summary><strong>Choose a method</strong></summary>
